@@ -1,6 +1,7 @@
 import { UserService } from './../../services/user/user.service';
 import { Component } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service';
 import { MessageService } from 'primeng/api';
 import { AuthRequest } from 'src/app/models/interfaces/user/authRequest';
@@ -31,7 +32,8 @@ export class HomeComponent {
     private formBuilder: FormBuilder,
     private UserService: UserService,
     private cookeService: CookieService,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private router: Router
   ) {}
 
   onSubmitLoginForm(): void {
@@ -50,6 +52,7 @@ export class HomeComponent {
               life: 2000
             })
             this.loginForm.reset()
+            this.router.navigate(['dashboard'])
             this.loginCard = false;
           }
         },
