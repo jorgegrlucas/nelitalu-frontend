@@ -1,4 +1,4 @@
-import { GetAllproductsResponse } from './../../../models/interfaces/response/GetAllProductsResponseInterface';
+import { GetAllproductsResponse } from '../../../models/interfaces/products/response/GetAllProductsResponseInterface';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, map, take } from 'rxjs';
 

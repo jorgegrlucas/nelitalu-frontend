@@ -1,4 +1,5 @@
 <app-toolbar-navigation></app-toolbar-navigation>
 
 <app-products-table
-[products]="productDatas"></app-products-table>
+[products]="productDatas"
+(productEvent)="handleProductAction($event)"></app-products-table>
