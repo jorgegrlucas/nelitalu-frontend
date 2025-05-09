@@ -71,4 +71,11 @@ export class ProductsHomeComponent implements OnDestroy, OnInit {
     this.destroy$.next();
     this.destroy$.complete();
   }
+
+  handleDeleteProductAction(evento: {productId: string, productName: string}) :void{
+    if(evento){
+      console.log("DADOS RECEBIDOS: ", evento)
+    }
+
+  }
 }

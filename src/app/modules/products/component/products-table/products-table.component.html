@@ -141,7 +141,8 @@
                 icon="pi pi-pencil"
                 class="p-button-rounded p-button-warning"
                 pTooltip="Editar produto"
-                tooltipPosition="top"></button>
+                tooltipPosition="top"
+                (click)="handleProductEvent(editProductEvent, product.id)"></button>
                 <button
                 pButton
                 pRipple
@@ -149,7 +150,7 @@
                 class="p-button-rounded p-button-danger"
                 pTooltip="Remover produto"
                 tooltipPosition="top"
-                (click)="handleProductEvent(editProductEvent, product.id)"></button>
+                (click)="handleDeleteProduct(product?.id, product?.name)"></button>
               </div>
             </td>
           </tr>
