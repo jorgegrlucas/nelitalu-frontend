@@ -23,6 +23,11 @@ const routes: Routes = [
     loadChildren : () => import('./modules/products/products.module').then((m)=>m.ProductsModule),
     canActivate: [AuthGuardService]
   },
+  {
+    path: 'categories',
+    loadChildren : () => import('./modules/categories/categories.module').then((m)=>m.CategoriesModule),
+    canActivate: [AuthGuardService]
+  }
 ];
 
 @NgModule({
