@@ -35,6 +35,7 @@ export class ProcuctFormComponent implements OnInit, OnDestroy {
     price: ['', Validators.required],
     description: ['', Validators.required],
     amount: [0, Validators.required],
+    category_id: ['', Validators.required],
   });
 
   public categoriesDatas: Array<getCategoriesResponse> = [];
@@ -44,10 +45,11 @@ export class ProcuctFormComponent implements OnInit, OnDestroy {
     productDatas: Array<GetAllproductsResponse>;
   };
   public productSelectedDatas!: GetAllproductsResponse;
-  public productDatas: Array<GetAllproductsResponse> = []
-  public addProductAction = ProductEvent.ADD_PRODUCT_EVENT
-  public editProductAction = ProductEvent.EDIT_PRODUCT_EVENT
-  public saleProductAction = ProductEvent.SALE_PRODUCT_EVENT
+  public productDatas: Array<GetAllproductsResponse> = [];
+  public addProductAction = ProductEvent.ADD_PRODUCT_EVENT;
+  public editProductAction = ProductEvent.EDIT_PRODUCT_EVENT;
+  public saleProductAction = ProductEvent.SALE_PRODUCT_EVENT;
+  public renderDropdown = false;
 
   constructor(
     private categoriesService: CategoriesService,
@@ -70,6 +72,14 @@ export class ProcuctFormComponent implements OnInit, OnDestroy {
       .subscribe({
         next: (response) => {
           if (response.length > 0) {
+            if (
+              this.productAction?.event?.action === this.editProductAction &&
+              this.productAction?.productDatas
+            ) {
+              this.getProductSelectedDatas(
+                this.productAction?.event?.id as string
+              );
+            }
             this.categoriesDatas = response;
           }
         },
@@ -78,13 +88,11 @@ export class ProcuctFormComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.productAction = this.ref.data;
-    if (this.productAction?.event?.action === this.editProductAction && this.productAction?.productDatas) {
-      this.getProductSelectedDatas(this.productAction?.event?.id as string)
-    }
     // if (this.productAction?.event?.action === this.saleProductAction) {
     //   this.getProductSelectedDatas(this.productAction?.event?.id as string)
     // }
     this.getAllCategories();
+    this.renderDropdown = true;
   }
 
   handleSubmitAddProduct(): void {
@@ -125,36 +133,42 @@ export class ProcuctFormComponent implements OnInit, OnDestroy {
   }
 
   handleSubmitEditProduct(): void {
-    if (this.editProductForm.value && this.editProductForm.valid && this.productAction.event.id) {
+    if (
+      this.editProductForm.value &&
+      this.editProductForm.valid &&
+      this.productAction.event.id
+    ) {
       const requestEditProduct: EditProductRequest = {
         name: this.editProductForm.value.name as string,
         price: this.editProductForm.value.price as string,
         description: this.editProductForm.value.description as string,
         product_id: this.productAction?.event?.id,
-        amount: this.editProductForm.value.amount as number
-      }
-      this.productService.editProduct(requestEditProduct)
-      .pipe(takeUntil(this.destroy$))
-      .subscribe({
-        next: () => {
-          this.messageService.add({
-            severity: 'success',
-            summary: 'Sucesso',
-            detail: 'Produto editado com sucesso!',
-            life: 2500
-          })
-          this.editProductForm.reset();
-        }, error: (err) => {
-          this.messageService.add({
-            severity: 'error',
-            summary: 'Erro',
-            detail: 'Erro o editar produto!',
-            life: 2500
-          })
-          this.editProductForm.reset();
-        }
-
-      })
+        amount: this.editProductForm.value.amount as number,
+        category_id: this.editProductForm.value.category_id as string
+      };
+      this.productService
+        .editProduct(requestEditProduct)
+        .pipe(takeUntil(this.destroy$))
+        .subscribe({
+          next: () => {
+            this.messageService.add({
+              severity: 'success',
+              summary: 'Sucesso',
+              detail: 'Produto editado com sucesso!',
+              life: 2500,
+            });
+            this.editProductForm.reset();
+          },
+          error: (err) => {
+            this.messageService.add({
+              severity: 'error',
+              summary: 'Erro',
+              detail: 'Erro o editar produto!',
+              life: 2500,
+            });
+            this.editProductForm.reset();
+          },
+        });
     }
   }
 
@@ -172,21 +186,24 @@ export class ProcuctFormComponent implements OnInit, OnDestroy {
           price: this.productSelectedDatas.price,
           amount: this.productSelectedDatas.amount,
           description: this.productSelectedDatas.description,
+          category_id: this.productSelectedDatas.category.id
         });
       }
     }
   }
 
   getProductDatas(): void {
-    this.productService.getAllProducts()
-    .pipe(takeUntil(this.destroy$))
-    .subscribe({
-      next: (response) => {
-        if (response.length > 0) {
-          this.productDatas = response
-          this.productDatas && this.productsDtService.setProductsDatas(this.productDatas)
-        }
-      }
-    })
+    this.productService
+      .getAllProducts()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (response) => {
+          if (response.length > 0) {
+            this.productDatas = response;
+            this.productDatas &&
+              this.productsDtService.setProductsDatas(this.productDatas);
+          }
+        },
+      });
   }
 }
