@@ -21,6 +21,7 @@ import { ProductsHomeComponent } from './page/products-home/products-home.compon
 import { RouterModule } from '@angular/router';
 import { products_routes } from './products.routing';
 import { ProductsTableComponent } from './component/products-table/products-table.component';
+import { ProcuctFormComponent } from './component/procuct-form/procuct-form.component';
 
 
 
@@ -28,6 +29,7 @@ import { ProductsTableComponent } from './component/products-table/products-tabl
   declarations: [
     ProductsHomeComponent,
     ProductsTableComponent,
+    ProcuctFormComponent,
   ],
   imports: [
     CommonModule,

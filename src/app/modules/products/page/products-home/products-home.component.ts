@@ -4,8 +4,10 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subject, takeUntil } from 'rxjs';
 import { Router } from '@angular/router';
 import { GetAllproductsResponse } from 'src/app/models/interfaces/products/response/GetAllProductsResponseInterface';
-import { MessageService } from 'primeng/api';
+import { MessageService, ConfirmationService } from 'primeng/api';
 import { EventAction } from 'src/app/models/interfaces/products/event/eventAction';
+import { DynamicDialogRef, DialogService } from 'primeng/dynamicdialog';
+import { ProcuctFormComponent } from '../../component/procuct-form/procuct-form.component';
 
 @Component({
   selector: 'app-products-home',
@@ -15,12 +17,15 @@ import { EventAction } from 'src/app/models/interfaces/products/event/eventActio
 export class ProductsHomeComponent implements OnDestroy, OnInit {
   private readonly destroy$: Subject<void> = new Subject();
   public productDatas: Array<GetAllproductsResponse> = [];
+  private ref!: DynamicDialogRef
 
   constructor(
     private productsService: ProductsService,
     private productsDataTransferService: ProductsDataTransferService,
     private router: Router,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private confirmationService: ConfirmationService,
+    private dialogService: DialogService,
   ) {}
   ngOnInit(): void {
     this.getServiceProductdDatas();
@@ -35,7 +40,7 @@ export class ProductsHomeComponent implements OnDestroy, OnInit {
       this.getAPIProductsData();
     }
 
-    console.log(this.productDatas)
+    console.log(this.productDatas);
   }
 
   getAPIProductsData() {
@@ -54,16 +59,31 @@ export class ProductsHomeComponent implements OnDestroy, OnInit {
             severity: 'error',
             summary: 'Error',
             detail: 'Erro ao carregar produtos',
-            life: 2000
-          })
+            life: 2000,
+          });
           this.router.navigate(['/home']);
         },
       });
   }
 
-  handleProductAction(event: EventAction) : void{
-    if(event){
-      console.log('Dados do evento recebido: ',event)
+  handleProductAction(event: EventAction): void {
+    if (event) {
+      this.ref = this.dialogService.open(ProcuctFormComponent, {
+        header: event?.action,
+        width: '70%',
+        contentStyle: { overflow: 'auto'},
+        baseZIndex: 10000,
+        maximizable: true,
+        data: {
+          event: event,
+          productDatas: this.productDatas
+        }
+      })
+      this.ref.onClose
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: () => this.getAPIProductsData()
+      })
     }
   }
 
@@ -72,10 +92,49 @@ export class ProductsHomeComponent implements OnDestroy, OnInit {
     this.destroy$.complete();
   }
 
-  handleDeleteProductAction(evento: {productId: string, productName: string}) :void{
-    if(evento){
-      console.log("DADOS RECEBIDOS: ", evento)
+  handleDeleteProductAction(evento: {
+    productId: string;
+    productName: string;
+  }): void {
+    if (evento) {
+      this.confirmationService.confirm({
+        message: `Confirma a exclusão do produto: ${evento?.productName}?`,
+        header: 'Confirmação de exclusão',
+        icon: 'pi pi-exclamation-triangle',
+        acceptLabel: 'Sim',
+        rejectLabel: 'Não',
+        accept: () => this.deleteProduct(evento?.productId),
+      });
+      console.log('DADOS RECEBIDOS: ', evento);
     }
-
+  }
+  deleteProduct(productId: string) {
+    if (productId) {
+      this.productsService
+        .deleteProduct(productId)
+        .pipe(takeUntil(this.destroy$))
+        .subscribe({
+          next: (res) => {
+            if (res) {
+              this.messageService.add({
+                severity: 'sucess',
+                summary: 'Successo',
+                detail: 'Removido com sucesso',
+                life: 2000,
+              });
+              this.getAPIProductsData();
+            }
+          },
+          error: (err) => {
+            console.log(err);
+            this.messageService.add({
+              severity: 'error',
+              summary: 'Error',
+              detail: 'Erro ao remover o produto',
+              life: 2000,
+            });
+          },
+        });
+    }
   }
 }
