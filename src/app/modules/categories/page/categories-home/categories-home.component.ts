@@ -1,11 +1,13 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ConfirmationService, MessageService } from 'primeng/api';
-import { DialogService } from 'primeng/dynamicdialog';
+import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { Subject, takeUntil } from 'rxjs';
 import { DeleteCategoryAction } from 'src/app/models/interfaces/categories/responses/event/DeleteCategoryAction';
 import { GetCategoriesResponse } from 'src/app/models/interfaces/categories/responses/getCategoriesResponse';
+import { EventAction } from 'src/app/models/interfaces/products/event/eventAction';
 import { CategoriesService } from 'src/app/services/categories/categories.service';
+import { CategoryFormComponent } from '../../components/category-form/category-form.component';
 
 @Component({
   selector: 'app-categories-home',
@@ -15,6 +17,8 @@ import { CategoriesService } from 'src/app/services/categories/categories.servic
 export class CategoriesHomeComponent implements OnInit, OnDestroy {
   private readonly destroy$: Subject<void> = new Subject();
   public categoriesDatas: Array<GetCategoriesResponse> = [];
+
+  private ref!: DynamicDialogRef;
 
   constructor(
     private categoriesService: CategoriesService,
@@ -73,7 +77,7 @@ export class CategoriesHomeComponent implements OnInit, OnDestroy {
         .deleteCategory({ category_id })
         .pipe(takeUntil(this.destroy$))
         .subscribe({
-          next: (response) => {
+          next: () => {
             this.messageService.add({
               severity: 'success',
               summary: 'Sucesso',
@@ -94,6 +98,24 @@ export class CategoriesHomeComponent implements OnInit, OnDestroy {
           },
         });
     }
-     this.getAllCategories();
+    this.getAllCategories();
+  }
+
+  handleCategoryAction(event: EventAction): void {
+    if (event) {
+      this.ref = this.dialogService.open(CategoryFormComponent, {
+        header: event?.action,
+        width: '70%',
+        contentStyle: { overflow: 'auto' },
+        baseZIndex: 10000,
+        maximizable: true,
+        data: {
+          event: event,
+        },
+      });
+      this.ref.onClose.pipe(takeUntil(this.destroy$)).subscribe({
+        next: () => this.getAllCategories(),
+      });
+    }
   }
 }
