@@ -1,4 +1,4 @@
-export interface getCategoriesResponse{
+export interface GetCategoriesResponse{
   id: string,
   name: string
 }

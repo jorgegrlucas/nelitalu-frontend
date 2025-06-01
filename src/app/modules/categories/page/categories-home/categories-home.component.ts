@@ -4,7 +4,7 @@ import { ConfirmationService, MessageService } from 'primeng/api';
 import { DialogService } from 'primeng/dynamicdialog';
 import { Subject, takeUntil } from 'rxjs';
 import { DeleteCategoryAction } from 'src/app/models/interfaces/categories/responses/event/DeleteCategoryAction';
-import { getCategoriesResponse } from 'src/app/models/interfaces/categories/responses/getCategoriesResponse';
+import { GetCategoriesResponse } from 'src/app/models/interfaces/categories/responses/getCategoriesResponse';
 import { CategoriesService } from 'src/app/services/categories/categories.service';
 
 @Component({
@@ -14,7 +14,7 @@ import { CategoriesService } from 'src/app/services/categories/categories.servic
 })
 export class CategoriesHomeComponent implements OnInit, OnDestroy {
   private readonly destroy$: Subject<void> = new Subject();
-  public categoriesDatas: Array<getCategoriesResponse> = [];
+  public categoriesDatas: Array<GetCategoriesResponse> = [];
 
   constructor(
     private categoriesService: CategoriesService,

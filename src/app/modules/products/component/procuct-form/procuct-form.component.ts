@@ -5,7 +5,7 @@ import { CategoriesService } from './../../../../services/categories/categories.
 import { Subject, takeUntil } from 'rxjs';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { getCategoriesResponse } from 'src/app/models/interfaces/categories/responses/getCategoriesResponse';
+import { GetCategoriesResponse } from 'src/app/models/interfaces/categories/responses/getCategoriesResponse';
 import { CreateProductRequest } from 'src/app/models/interfaces/products/request/CreateProductRequest';
 import { ProductsService } from 'src/app/services/products/products.service';
 import { DynamicDialogConfig } from 'primeng/dynamicdialog';
@@ -38,7 +38,7 @@ export class ProcuctFormComponent implements OnInit, OnDestroy {
     category_id: ['', Validators.required],
   });
 
-  public categoriesDatas: Array<getCategoriesResponse> = [];
+  public categoriesDatas: Array<GetCategoriesResponse> = [];
   public selectedCategory: Array<{ name: string; code: string }> = [];
   public productAction!: {
     event: EventAction;
