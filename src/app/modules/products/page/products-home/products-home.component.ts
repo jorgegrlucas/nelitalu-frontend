@@ -17,7 +17,7 @@ import { ProcuctFormComponent } from '../../component/procuct-form/procuct-form.
 export class ProductsHomeComponent implements OnDestroy, OnInit {
   private readonly destroy$: Subject<void> = new Subject();
   public productDatas: Array<GetAllproductsResponse> = [];
-  private ref!: DynamicDialogRef
+  private ref!: DynamicDialogRef;
 
   constructor(
     private productsService: ProductsService,
@@ -25,7 +25,7 @@ export class ProductsHomeComponent implements OnDestroy, OnInit {
     private router: Router,
     private messageService: MessageService,
     private confirmationService: ConfirmationService,
-    private dialogService: DialogService,
+    private dialogService: DialogService
   ) {}
   ngOnInit(): void {
     this.getServiceProductdDatas();
@@ -49,7 +49,7 @@ export class ProductsHomeComponent implements OnDestroy, OnInit {
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (response) => {
-          if (response.length < 0) {
+          if (response.length > 0) {
             this.productDatas = response;
           }
         },
@@ -71,19 +71,17 @@ export class ProductsHomeComponent implements OnDestroy, OnInit {
       this.ref = this.dialogService.open(ProcuctFormComponent, {
         header: event?.action,
         width: '70%',
-        contentStyle: { overflow: 'auto'},
+        contentStyle: { overflow: 'auto' },
         baseZIndex: 10000,
         maximizable: true,
         data: {
           event: event,
-          productDatas: this.productDatas
-        }
-      })
-      this.ref.onClose
-      .pipe(takeUntil(this.destroy$))
-      .subscribe({
-        next: () => this.getAPIProductsData()
-      })
+          productDatas: this.productDatas,
+        },
+      });
+      this.ref.onClose.pipe(takeUntil(this.destroy$)).subscribe({
+        next: () => this.getAPIProductsData(),
+      });
     }
   }
 

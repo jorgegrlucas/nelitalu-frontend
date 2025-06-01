@@ -17,8 +17,14 @@
       <input pInputText placeholder="Descrição" formControlName="description" />
       <input pInputNumber placeholder="Quantidade" formControlName="amount" />
 
-      <div class="flex flex-row justify-content-center align-content-center align-items-center m-1">
-        <p-button [disabled]="!addProductForm.valid" type="submit" label="Concluir"></p-button>
+      <div
+        class="flex flex-row justify-content-center align-content-center align-items-center m-1"
+      >
+        <p-button
+          [disabled]="!addProductForm.valid"
+          type="submit"
+          label="Concluir"
+        ></p-button>
       </div>
     </div>
   </form>
@@ -42,8 +48,41 @@
       <input pInputText placeholder="Descrição" formControlName="description" />
       <input pInputNumber placeholder="Quantidade" formControlName="amount" />
 
-      <div class="flex flex-row justify-content-center align-content-center align-items-center m-1">
-        <p-button [disabled]="!editProductForm.valid" type="submit" label="Concluir"></p-button>
+      <div
+        class="flex flex-row justify-content-center align-content-center align-items-center m-1"
+      >
+        <p-button
+          [disabled]="!editProductForm.valid"
+          type="submit"
+          label="Concluir"
+        ></p-button>
+      </div>
+    </div>
+  </form>
+</div>
+
+<div *ngIf="productAction.event.action === saleProductAction">
+  <form [formGroup]="saleProductForm" (ngSubmit)="handleSubmitSaleProduct()">
+    <div class="card flex flex-column md:flex-column gap-3">
+      <p-dropdown
+        styleClass="w-full"
+        [options]="productDatas"
+        [(ngModel)]="saleProductSelected"
+        optionLabel="name"
+        optionValue="id"
+        formControlName="product_id"
+        placeholder="Selecione um produto"
+      ></p-dropdown>
+      <input pInputNumber placeholder="Quantidade" formControlName="amount" />
+
+      <div
+        class="flex flex-row justify-content-center align-content-center align-items-center m-1"
+      >
+        <p-button
+          [disabled]="!saleProductForm.valid"
+          type="submit"
+          label="Concluir"
+        ></p-button>
       </div>
     </div>
   </form>

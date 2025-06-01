@@ -29,14 +29,17 @@
       icon="pi pi-credit-card"
       label="Efetuar Venda"
       styleClass="bg-indigo-800 p-button secondary"
-      routerLinkActive="exact_route"
       routerLink="/products"
       class="mr-2"
+      (onClick)="handleSaleProduct()"
     ></p-button>
   </div>
   <div class="p-toolbar-group-end">
-    <p-button label="Sair" icon="pi pi-sign-out" styleClass="p-button-danger" (onClick)="handleLogout()"></p-button>
+    <p-button
+      label="Sair"
+      icon="pi pi-sign-out"
+      styleClass="p-button-danger"
+      (onClick)="handleLogout()"
+    ></p-button>
   </div>
 </p-toolbar>
-
-

@@ -1,3 +1,4 @@
+import { SaleProductRequest } from 'src/app/models/interfaces/products/request/SaleProductRequest';
 import { GetAllproductsResponse } from './../../../../models/interfaces/products/response/GetAllProductsResponseInterface';
 import { MessageService } from 'primeng/api';
 import { FormBuilder, Validators } from '@angular/forms';
@@ -38,6 +39,11 @@ export class ProcuctFormComponent implements OnInit, OnDestroy {
     category_id: ['', Validators.required],
   });
 
+  public saleProductForm = this.formBuilder.group({
+    amount: [0, Validators.required],
+    product_id: ['', Validators.required],
+  });
+
   public categoriesDatas: Array<GetCategoriesResponse> = [];
   public selectedCategory: Array<{ name: string; code: string }> = [];
   public productAction!: {
@@ -46,6 +52,7 @@ export class ProcuctFormComponent implements OnInit, OnDestroy {
   };
   public productSelectedDatas!: GetAllproductsResponse;
   public productDatas: Array<GetAllproductsResponse> = [];
+  public saleProductSelected!: GetAllproductsResponse;
   public addProductAction = ProductEvent.ADD_PRODUCT_EVENT;
   public editProductAction = ProductEvent.EDIT_PRODUCT_EVENT;
   public saleProductAction = ProductEvent.SALE_PRODUCT_EVENT;
@@ -92,6 +99,7 @@ export class ProcuctFormComponent implements OnInit, OnDestroy {
     //   this.getProductSelectedDatas(this.productAction?.event?.id as string)
     // }
     this.getAllCategories();
+    this.getProductDatas();
     this.renderDropdown = true;
   }
 
@@ -144,7 +152,7 @@ export class ProcuctFormComponent implements OnInit, OnDestroy {
         description: this.editProductForm.value.description as string,
         product_id: this.productAction?.event?.id,
         amount: this.editProductForm.value.amount as number,
-        category_id: this.editProductForm.value.category_id as string
+        category_id: this.editProductForm.value.category_id as string,
       };
       this.productService
         .editProduct(requestEditProduct)
@@ -172,6 +180,41 @@ export class ProcuctFormComponent implements OnInit, OnDestroy {
     }
   }
 
+  handleSubmitSaleProduct(): void {
+    if (this.saleProductForm.value && this.saleProductForm.valid) {
+      const requestDatas: SaleProductRequest = {
+        amount: this.saleProductForm.value.amount as number,
+        product_id: this.saleProductForm.value.product_id as string,
+      };
+      this.productService
+        .saleProduct(requestDatas)
+        .pipe(takeUntil(this.destroy$))
+        .subscribe({
+          next: (response) => {
+            this.saleProductForm.reset();
+            this.getProductDatas();
+            this.messageService.add({
+              severity: 'success',
+              summary: 'Sucesso',
+              detail: 'Venda efetuada com sucesso!',
+              life: 2500,
+            });
+            this.router.navigate(['/dashboard']);
+          },
+          error: (err) => {
+            console.log(err);
+            this.saleProductForm.reset();
+            this.messageService.add({
+              severity: 'error',
+              summary: 'Erro',
+              detail: 'Erro ao vender produto!',
+              life: 2500,
+            });
+          },
+        });
+    }
+  }
+
   getProductSelectedDatas(productId: string): void {
     const allProducts = this.productAction.productDatas;
     if (allProducts.length > 0) {
@@ -186,7 +229,7 @@ export class ProcuctFormComponent implements OnInit, OnDestroy {
           price: this.productSelectedDatas.price,
           amount: this.productSelectedDatas.amount,
           description: this.productSelectedDatas.description,
-          category_id: this.productSelectedDatas.category.id
+          category_id: this.productSelectedDatas.category.id,
         });
       }
     }
