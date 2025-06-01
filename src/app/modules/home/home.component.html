@@ -1,8 +1,12 @@
-<div class="grid">
+<div
+  class="grid flex justify-content-center align-items-center"
+  style="min-height: 100vh"
+>
   <div class="col-4-2">
-    <div
+    <!-- <div
       class="flex justify-content-center align-content-center text-align-center"
-    ></div>
+    ></div> -->
+    <div class=""></div>
     <!-- LOGIN -->
     <form [formGroup]="loginForm" (ngSubmit)="this.onSubmitLoginForm()">
       <p-card
@@ -14,20 +18,36 @@
         <div
           class="flex justify-content-center align-content-center text-align-center"
         >
-          <input type="email" pInputText placeholder="E-mail" formControlName="email"/>
+          <input
+            type="email"
+            pInputText
+            placeholder="E-mail"
+            formControlName="email"
+          />
         </div>
         <div
           class="flex justify-content-center align-content-center text-align-center"
         >
-          <input type="password" pInputText placeholder="Senha" formControlName="password"/>
+          <input
+            type="password"
+            pInputText
+            placeholder="Senha"
+            formControlName="password"
+          />
         </div>
         <div class="card flex justify-content-center mt-3">
-          <button type="submit" pButton pRipple label="Login" [disabled]="!this.loginForm.valid"></button>
+          <button
+            type="submit"
+            pButton
+            pRipple
+            label="Login"
+            [disabled]="!this.loginForm.valid"
+          ></button>
         </div>
         <span
           class="flex justify-content-center align-content-center text-align-center mt-3 text-red-600 font-semibold"
           (click)="loginCard = !loginCard"
-          style="cursor: pointer;"
+          style="cursor: pointer"
         >
           Criar conta
         </span>
@@ -44,25 +64,46 @@
         <div
           class="flex justify-content-center align-content-center text-align-center"
         >
-          <input type="text" pInputText placeholder="Nome" formControlName="name"/>
+          <input
+            type="text"
+            pInputText
+            placeholder="Nome"
+            formControlName="name"
+          />
         </div>
         <div
           class="flex justify-content-center align-content-center text-align-center"
         >
-          <input type="email" pInputText placeholder="E-mail" formControlName="email"/>
+          <input
+            type="email"
+            pInputText
+            placeholder="E-mail"
+            formControlName="email"
+          />
         </div>
         <div
           class="flex justify-content-center align-content-center text-align-center"
         >
-          <input type="password" pInputText placeholder="Senha" formControlName="password"/>
+          <input
+            type="password"
+            pInputText
+            placeholder="Senha"
+            formControlName="password"
+          />
         </div>
         <div class="card flex justify-content-center mt-3">
-          <button type="submit" pButton pRipple label="Criar conta" [disabled]="!this.signUpForm.valid"></button>
+          <button
+            type="submit"
+            pButton
+            pRipple
+            label="Criar conta"
+            [disabled]="!this.signUpForm.valid"
+          ></button>
         </div>
         <span
           class="flex justify-content-center align-content-center text-align-center mt-3 text-red-600 font-semibold"
           (click)="loginCard = !loginCard"
-          style="cursor: pointer;"
+          style="cursor: pointer"
         >
           Fazer Login
         </span>
