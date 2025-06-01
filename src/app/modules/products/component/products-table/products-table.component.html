@@ -28,13 +28,14 @@
                 <div class="flex justify-content-between align-items-center">
                   <p-sortIcon field="name"></p-sortIcon>
                   <p-columnFilter
-                  type="text"
-                  field="name"
-                  display="menu"
-                  matchMode="contains"
-                  [showMatchModes]="false"
-                  [showOperator]="false"
-                  [showAddButton]="false"></p-columnFilter>
+                    type="text"
+                    field="name"
+                    display="menu"
+                    matchMode="contains"
+                    [showMatchModes]="false"
+                    [showOperator]="false"
+                    [showAddButton]="false"
+                  ></p-columnFilter>
                 </div>
               </div>
             </th>
@@ -46,13 +47,14 @@
                 <div class="flex justify-content-between align-items-center">
                   <p-sortIcon field="amount"></p-sortIcon>
                   <p-columnFilter
-                  type="text"
-                  field="amount"
-                  display="menu"
-                  matchMode="contains"
-                  [showMatchModes]="false"
-                  [showOperator]="false"
-                  [showAddButton]="false"></p-columnFilter>
+                    type="text"
+                    field="amount"
+                    display="menu"
+                    matchMode="contains"
+                    [showMatchModes]="false"
+                    [showOperator]="false"
+                    [showAddButton]="false"
+                  ></p-columnFilter>
                 </div>
               </div>
             </th>
@@ -64,13 +66,14 @@
                 <div class="flex justify-content-between align-items-center">
                   <p-sortIcon field="price"></p-sortIcon>
                   <p-columnFilter
-                  type="text"
-                  field="price"
-                  display="menu"
-                  matchMode="contains"
-                  [showMatchModes]="false"
-                  [showOperator]="false"
-                  [showAddButton]="false"></p-columnFilter>
+                    type="text"
+                    field="price"
+                    display="menu"
+                    matchMode="contains"
+                    [showMatchModes]="false"
+                    [showOperator]="false"
+                    [showAddButton]="false"
+                  ></p-columnFilter>
                 </div>
               </div>
             </th>
@@ -82,13 +85,14 @@
                 <div class="flex justify-content-between align-items-center">
                   <p-sortIcon field="description"></p-sortIcon>
                   <p-columnFilter
-                  type="text"
-                  field="description"
-                  display="menu"
-                  matchMode="contains"
-                  [showMatchModes]="false"
-                  [showOperator]="false"
-                  [showAddButton]="false"></p-columnFilter>
+                    type="text"
+                    field="description"
+                    display="menu"
+                    matchMode="contains"
+                    [showMatchModes]="false"
+                    [showOperator]="false"
+                    [showAddButton]="false"
+                  ></p-columnFilter>
                 </div>
               </div>
             </th>
@@ -100,57 +104,62 @@
                 <div class="flex justify-content-between align-items-center">
                   <p-sortIcon field="category.name"></p-sortIcon>
                   <p-columnFilter
-                  type="text"
-                  field="category.name"
-                  display="menu"
-                  matchMode="contains"
-                  [showMatchModes]="false"
-                  [showOperator]="false"
-                  [showAddButton]="false"></p-columnFilter>
+                    type="text"
+                    field="category.name"
+                    display="menu"
+                    matchMode="contains"
+                    [showMatchModes]="false"
+                    [showOperator]="false"
+                    [showAddButton]="false"
+                  ></p-columnFilter>
                 </div>
               </div>
             </th>
             <th>
               <div class="flex justify-content-center">
                 <p-button
-                styleClass="p-button-info"
-                icon="pi pi-plus"
-                label="Adicionar"
-                pTooltip="Adicionar produto"
-                tooltipPosition="top"
-                (onClick)="handleProductEvent(addProductEvent)"
+                  styleClass="p-button-info"
+                  icon="pi pi-plus"
+                  label="Adicionar"
+                  pTooltip="Adicionar produto"
+                  tooltipPosition="top"
+                  (onClick)="handleProductEvent(addProductEvent)"
                 ></p-button>
               </div>
             </th>
-
-          </tr> </ng-template>
+          </tr>
+        </ng-template>
         <ng-template pTemplate="body" let-product>
           <tr>
-            <td> {{product?.name}}</td>
-            <td> {{product?.amount}}</td>
-            <td> {{product?.price | currency: "BRL"}}</td>
-            <td
-            [pTooltip]="product?.description"
-            tooltipPosition="top"> {{product?.description}}</td>
-            <td> {{product?.category.name}}</td>
+            <td>{{ product?.name }}</td>
+            <td>{{ product?.amount }}</td>
+            <td>{{ product?.price | currency : "BRL" }}</td>
+            <td [pTooltip]="product?.description" tooltipPosition="top">
+              {{ product?.description | shorten : 25 }}
+            </td>
+            <td>{{ product?.category.name }}</td>
             <td>
-              <div class="flex justify-content-center gap-3 align-content-center align-items-center">
+              <div
+                class="flex justify-content-center gap-3 align-content-center align-items-center"
+              >
                 <button
-                pButton
-                pRipple
-                icon="pi pi-pencil"
-                class="p-button-rounded p-button-warning"
-                pTooltip="Editar produto"
-                tooltipPosition="top"
-                (click)="handleProductEvent(editProductEvent, product.id)"></button>
+                  pButton
+                  pRipple
+                  icon="pi pi-pencil"
+                  class="p-button-rounded p-button-warning"
+                  pTooltip="Editar produto"
+                  tooltipPosition="top"
+                  (click)="handleProductEvent(editProductEvent, product.id)"
+                ></button>
                 <button
-                pButton
-                pRipple
-                icon="pi pi-trash"
-                class="p-button-rounded p-button-danger"
-                pTooltip="Remover produto"
-                tooltipPosition="top"
-                (click)="handleDeleteProduct(product?.id, product?.name)"></button>
+                  pButton
+                  pRipple
+                  icon="pi pi-trash"
+                  class="p-button-rounded p-button-danger"
+                  pTooltip="Remover produto"
+                  tooltipPosition="top"
+                  (click)="handleDeleteProduct(product?.id, product?.name)"
+                ></button>
               </div>
             </td>
           </tr>
