@@ -1,159 +1,121 @@
-/* You can add global styles to this file, and also import other style files */
+$background-color: #fbeff2;
+$accent-color: #f4a9c2;
+$hover-color: #f3c1d7;
+$text-color: #5a4a42;
+$border-color: lighten($accent-color, 30%);
+$card-background: #e5c6a2;
+$card-border: #eaaa61;
+$card-text: #5a4a42;
+
+
 * {
-  html,
-  body,
-  div,
-  span,
-  applet,
-  object,
-  iframe,
-  h1,
-  h2,
-  h3,
-  h4,
-  h5,
-  h6,
-  p,
-  blockquote,
-  pre,
-  a,
-  abbr,
-  acronym,
-  address,
-  big,
-  cite,
-  code,
-  del,
-  dfn,
-  em,
-  img,
-  ins,
-  kbd,
-  q,
-  s,
-  samp,
-  small,
-  strike,
-  strong,
-  sub,
-  sup,
-  tt,
-  var,
-  b,
-  u,
-  i,
-  center,
-  dl,
-  dt,
-  dd,
-  ol,
-  ul,
-  li,
-  fieldset,
-  form,
-  label,
-  legend,
-  table,
-  caption,
-  tbody,
-  tfoot,
-  thead,
-  tr,
-  th,
-  td,
-  article,
-  aside,
-  canvas,
-  details,
-  embed,
-  figure,
-  figcaption,
-  footer,
-  header,
-  hgroup,
-  menu,
-  nav,
-  output,
-  ruby,
-  section,
-  summary,
-  time,
-  mark,
-  audio,
-  video {
-    margin-top: 0;
-    padding: 0;
-    border: 0;
-    font-size: 100%;
-    font: inherit;
-    font-family: sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
-      "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans",
-      "Helvetica Neue", sans-serif;
-  }
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+    "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans",
+    "Helvetica Neue", sans-serif;
 
-  /* make sure to set some focus styles for accessibility */
-  :focus {
-    outline: 0;
+  &:focus {
+    outline: none;
   }
+}
 
-  /* HTML5 display-role reset for older browsers */
-  article,
-  aside,
-  details,
-  figcaption,
-  figure,
-  footer,
-  header,
-  hgroup,
-  menu,
-  nav,
-  section {
-    display: block;
-  }
+html, body {
+  background-color: $background-color;
+  color: $text-color;
+  font-size: 16px;
+}
 
-  ol,
-  ul {
-    list-style: none;
-  }
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+menu,
+nav,
+section {
+  display: block;
+}
 
-  blockquote,
-  q {
-    quotes: none;
-  }
+ol, ul {
+  list-style: none;
+}
 
-  blockquote:before,
-  blockquote:after,
-  q:before,
-  q:after {
+blockquote, q {
+  quotes: none;
+
+  &::before, &::after {
     content: "";
     content: none;
   }
+}
 
-  table {
-    border-collapse: collapse;
-    border-spacing: 0;
-  }
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
 
-  input[type="search"]::-webkit-search-cancel-button,
-  input[type="search"]::-webkit-search-decoration,
-  input[type="search"]::-webkit-search-results-button,
-  input[type="search"]::-webkit-search-results-decoration {
+input[type="search"] {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  box-sizing: content-box;
+
+  &::-webkit-search-cancel-button,
+  &::-webkit-search-decoration,
+  &::-webkit-search-results-button,
+  &::-webkit-search-results-decoration {
     -webkit-appearance: none;
     -moz-appearance: none;
   }
+}
 
-  input[type="search"] {
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    -webkit-box-sizing: content-box;
-    -moz-box-sizing: content-box;
-    box-sizing: content-box;
+textarea {
+  overflow: auto;
+  vertical-align: top;
+  resize: vertical;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  color: $text-color;
+  margin-bottom: 0.5rem;
+}
+
+a {
+  color: $accent-color;
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
   }
+}
 
-  textarea {
-    overflow: auto;
-    vertical-align: top;
-    resize: vertical;
+button {
+  background-color: $accent-color;
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+
+  &:hover {
+    background-color: $hover-color;
+  }
+}
+
+input, select, textarea {
+  border: 1px solid $border-color;
+  padding: 0.5rem;
+  border-radius: 4px;
+  background-color: white;
+  color: $text-color;
+
+  &:focus {
+    border-color: $accent-color;
   }
 }
 
@@ -163,10 +125,43 @@
 
 .exact_route {
   button {
-    background-color: #6372c3 !important;
+    background-color: $accent-color !important;
   }
 
   :host ::ng-deep .p-dropdown {
     width: 50%;
+    border-color: $accent-color;
   }
 }
+
+.p-card {
+  background-color: $card-background !important;
+  color: $card-text !important;
+  border: 1px solid $card-border !important;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05) !important;
+  border-radius: 8px;
+}
+.p-card input,
+.p-card textarea,
+.p-card select {
+  background-color: white !important;
+  color: $text-color !important;
+  border: 1px solid $border-color !important;
+}
+.p-card input::placeholder,
+.p-card textarea::placeholder {
+  color: $card-text !important;
+  opacity: 1;
+}
+
+.p-datatable {
+  background-color: #5a4a42 !important;
+  color: #f4a9c2 !important;
+}
+
+.p-datatable .p-datatable-tbody,
+.p-datatable .p-datatable-thead {
+  background-color: #5a4a42 !important;
+  color: #f4a9c2 !important;
+}
+
