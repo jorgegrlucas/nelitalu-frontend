@@ -4,7 +4,7 @@
     <div class="card flex flex-column md:flex-column gap-3">
       <!-- Nome do Produto -->
       <input pInputText placeholder="Nome" formControlName="name" />
-      <p-dropdown
+      <!-- <p-dropdown
         styleClass="w-full"
         [options]="categoriesDatas"
         [(ngModel)]="selectedCategory"
@@ -12,7 +12,7 @@
         optionValue="id"
         placeholder="Selecione uma categoria"
         formControlName="category_id"
-      ></p-dropdown>
+      ></p-dropdown> -->
       <input pInputText placeholder="Preço" formControlName="price" />
       <input pInputText placeholder="Descrição" formControlName="description" />
       <input pInputNumber placeholder="Quantidade" formControlName="amount" />
@@ -34,7 +34,7 @@
     <div class="card flex flex-column md:flex-column gap-3">
       <!-- Nome do Produto -->
       <input pInputText placeholder="Nome" formControlName="name" />
-      <div *ngIf="renderDropdown">
+      <!-- <div *ngIf="renderDropdown">
         <p-dropdown
           styleClass="w-full"
           [options]="categoriesDatas"
@@ -43,7 +43,7 @@
           optionValue="id"
           formControlName="category_id"
         ></p-dropdown>
-      </div>
+      </div> -->
       <input pInputText placeholder="Preço" formControlName="price" />
       <input pInputText placeholder="Descrição" formControlName="description" />
       <input pInputNumber placeholder="Quantidade" formControlName="amount" />

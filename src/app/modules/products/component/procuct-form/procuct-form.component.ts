@@ -27,7 +27,7 @@ export class ProcuctFormComponent implements OnInit, OnDestroy {
     name: ['', Validators.required],
     price: [''],
     description: ['', Validators.required],
-    category_id: ['', Validators.required],
+    // category_id: ['', Validators.required],
     amount: [0, Validators.required],
   });
 
@@ -36,7 +36,7 @@ export class ProcuctFormComponent implements OnInit, OnDestroy {
     price: ['', Validators.required],
     description: ['', Validators.required],
     amount: [0, Validators.required],
-    category_id: ['', Validators.required],
+    // category_id: ['', Validators.required],
   });
 
   public saleProductForm = this.formBuilder.group({
@@ -98,7 +98,7 @@ export class ProcuctFormComponent implements OnInit, OnDestroy {
     // if (this.productAction?.event?.action === this.saleProductAction) {
     //   this.getProductSelectedDatas(this.productAction?.event?.id as string)
     // }
-    this.getAllCategories();
+    // this.getAllCategories();
     this.getProductDatas();
     this.renderDropdown = true;
   }
@@ -109,7 +109,7 @@ export class ProcuctFormComponent implements OnInit, OnDestroy {
         name: this.addProductForm.value.name as string,
         price: this.addProductForm.value.price as string,
         description: this.addProductForm.value.description as string,
-        category_id: this.addProductForm.value.category_id as string,
+        // category_id: this.addProductForm.value.category_id as string,
         amount: Number(this.addProductForm.value.amount),
       };
       this.productService
@@ -152,7 +152,7 @@ export class ProcuctFormComponent implements OnInit, OnDestroy {
         description: this.editProductForm.value.description as string,
         product_id: this.productAction?.event?.id,
         amount: this.editProductForm.value.amount as number,
-        category_id: this.editProductForm.value.category_id as string,
+        // category_id: this.editProductForm.value.category_id as string,
       };
       this.productService
         .editProduct(requestEditProduct)
@@ -229,7 +229,7 @@ export class ProcuctFormComponent implements OnInit, OnDestroy {
           price: this.productSelectedDatas.price,
           amount: this.productSelectedDatas.amount,
           description: this.productSelectedDatas.description,
-          category_id: this.productSelectedDatas.category.id,
+          // category_id: this.productSelectedDatas.category.id,
         });
       }
     }

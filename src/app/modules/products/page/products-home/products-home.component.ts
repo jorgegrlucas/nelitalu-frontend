@@ -39,8 +39,6 @@ export class ProductsHomeComponent implements OnDestroy, OnInit {
     } else {
       this.getAPIProductsData();
     }
-
-    console.log(this.productDatas);
   }
 
   getAPIProductsData() {
@@ -106,6 +104,7 @@ export class ProductsHomeComponent implements OnDestroy, OnInit {
       console.log('DADOS RECEBIDOS: ', evento);
     }
   }
+
   deleteProduct(productId: string) {
     if (productId) {
       this.productsService

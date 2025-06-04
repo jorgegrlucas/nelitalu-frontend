@@ -7,31 +7,30 @@ import { GetAllproductsResponse } from 'src/app/models/interfaces/products/respo
 @Component({
   selector: 'app-products-table',
   templateUrl: './products-table.component.html',
-  styleUrls: []
+  styleUrls: [],
 })
 export class ProductsTableComponent {
-  @Input() products: Array<GetAllproductsResponse> = []
-  @Output() productEvent = new EventEmitter<EventAction>()
-  @Output() deleteProductEvent = new EventEmitter<DeleteProductAction>()
+  @Input() products: Array<GetAllproductsResponse> = [];
+  @Output() productEvent = new EventEmitter<EventAction>();
+  @Output() deleteProductEvent = new EventEmitter<DeleteProductAction>();
 
-  public productSelected!: GetAllproductsResponse
-  public addProductEvent = ProductEvent.ADD_PRODUCT_EVENT
-  public editProductEvent = ProductEvent.EDIT_PRODUCT_EVENT
+  public productSelected!: GetAllproductsResponse;
+  public addProductEvent = ProductEvent.ADD_PRODUCT_EVENT;
+  public editProductEvent = ProductEvent.EDIT_PRODUCT_EVENT;
 
-  public handleProductEvent(action: string, id?: string): void{
-    if(action && action != ''){
-       const productEventData = id && id != '' ? { action, id} : { action }
-        this.productEvent.emit(productEventData)
+  public handleProductEvent(action: string, id?: string): void {
+    if (action && action != '') {
+      const productEventData = id && id != '' ? { action, id } : { action };
+      this.productEvent.emit(productEventData);
     }
   }
 
-  handleDeleteProduct(productId: string, productName: string) : void{
-    if(productId != '' && productName != ''){
+  handleDeleteProduct(productId: string, productName: string): void {
+    if (productId != '' && productName != '') {
       this.deleteProductEvent.emit({
         productId,
-        productName
-      })
+        productName,
+      });
     }
   }
-
 }
