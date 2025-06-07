@@ -37,6 +37,18 @@ const routes: Routes = [
       ),
     canActivate: [AuthGuardService],
   },
+  {
+    path: 'page',
+    loadChildren: () =>
+      import('./modules/home/page/page.module').then((m) => m.PageModule),
+    canActivate: [AuthGuardService],
+  },
+  {
+    path: 'cart',
+    loadChildren: () =>
+      import('./modules/cart/cart.module').then((m) => m.CartModule),
+    canActivate: [AuthGuardService],
+  },
 ];
 
 @NgModule({

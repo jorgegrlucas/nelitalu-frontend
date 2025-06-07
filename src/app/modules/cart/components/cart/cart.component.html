@@ -1,0 +1,21 @@
+<app-toolbar-navigation></app-toolbar-navigation>
+
+<h1>Meu Carrinho</h1>
+
+<div *ngIf="cartItems.length === 0">Seu carrinho está vazio.</div>
+
+<div class="cart-list" *ngIf="cartItems.length > 0">
+  <div class="cart-item" *ngFor="let item of cartItems">
+    <div class="item-info">
+      <strong>{{ item.jewel.name }}</strong>
+      <p>Preço: {{ item.jewel.price | currency : "BRL" }}</p>
+    </div>
+    <button
+      pButton
+      type="button"
+      icon="pi pi-trash"
+      class="p-button-rounded p-button-danger"
+      (click)="removeFromCart(item._id)"
+    ></button>
+  </div>
+</div>

@@ -83,11 +83,6 @@ export class ProductsHomeComponent implements OnDestroy, OnInit {
     }
   }
 
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
-  }
-
   handleDeleteProductAction(evento: {
     productId: string;
     productName: string;
@@ -133,5 +128,10 @@ export class ProductsHomeComponent implements OnDestroy, OnInit {
           },
         });
     }
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }
