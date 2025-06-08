@@ -20,6 +20,7 @@ import { ConfirmationService } from 'primeng/api';
 import { RouterModule } from '@angular/router';
 import { CartComponent } from './components/cart/cart.component';
 import { CART_ROUTES } from './cart.routing';
+import { DialogModule } from 'primeng/dialog';
 
 @NgModule({
   declarations: [CartComponent],
@@ -43,6 +44,7 @@ import { CART_ROUTES } from './cart.routing';
     DropdownModule,
     ConfirmDialogModule,
     TooltipModule,
+    DialogModule,
   ],
   providers: [DialogService, ConfirmationService],
 })

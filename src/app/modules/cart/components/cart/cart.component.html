@@ -19,3 +19,43 @@
     ></button>
   </div>
 </div>
+
+<!-- Subtotal -->
+<div *ngIf="cartItems.length > 0" class="subtotal-container">
+  <h3>Subtotal: {{ getSubtotal() | currency : "BRL" }}</h3>
+  <button
+    pButton
+    label="Finalizar Compra"
+    icon="pi pi-check"
+    class="p-button-success"
+    (click)="finalizePurchase()"
+  ></button>
+</div>
+
+<!-- Modal de confirmação -->
+<p-dialog
+  header="Confirmação de Compra"
+  [(visible)]="checkoutDialogVisible"
+  [modal]="true"
+  [dismissableMask]="true"
+  [style]="{ width: '400px' }"
+>
+  <p>Tem certeza de que deseja finalizar esta compra?</p>
+  <div class="p-dialog-footer">
+    <button
+      pButton
+      label="Cancelar"
+      icon="pi pi-times"
+      (click)="checkoutDialogVisible = false"
+      class="p-button-text"
+    ></button>
+    <button
+      pButton
+      label="Confirmar"
+      icon="pi pi-check"
+      (click)="finalizePurchase()"
+      class="p-button-success"
+    ></button>
+  </div>
+</p-dialog>
+<div id="paypal-button-container"></div>
