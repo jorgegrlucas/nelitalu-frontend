@@ -94,12 +94,58 @@ export class ProcuctFormComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    console.log('==== DATA do modal: ====');
+    console.log(this.ref.data);
     this.productAction = this.ref.data;
-    // if (this.productAction?.event?.action === this.saleProductAction) {
-    //   this.getProductSelectedDatas(this.productAction?.event?.id as string)
-    // }
-    // this.getAllCategories();
-    this.getProductDatas();
+
+    if (
+      (!this.productAction.productDatas ||
+        this.productAction.productDatas.length === 0) &&
+      this.ref.data.event.action != 'Vender produto'
+    ) {
+      console.log('chamou');
+      // Se vier vazio, faz uma chamada
+      this.productService
+        .getAllProducts()
+        .pipe(takeUntil(this.destroy$))
+        .subscribe({
+          next: (products) => {
+            this.productAction.productDatas = products;
+            this.getProductSelectedDatas(this.productAction.event.id as string);
+          },
+        });
+    } else if (
+      this.productAction.event?.action === 'EDIT_PRODUCT' &&
+      this.productAction.event?.id &&
+      this.ref.data.event.action != 'Vender produto'
+    ) {
+      console.log('else if');
+      this.getProductSelectedDatas(this.productAction.event.id);
+    }
+
+    console.log('AQUI, ', this.ref);
+
+    if (
+      (this.productAction.event?.action === 'EDIT_PRODUCT' ||
+        this.productAction.event?.action == 'Editar produto') &&
+      this.productAction.event?.id &&
+      this.ref.data.event.action != 'Vender produto'
+    ) {
+      console.log('this.ref.data.productDatas, ', this.ref.data.productDatas);
+      const productFiltered = this.ref.data.productDatas.find(
+        (ele: any) => String(ele?._id) === String(this.productAction.event.id)
+      );
+      this.editProductForm.setValue({
+        name: productFiltered.name,
+        price: productFiltered.price,
+        amount: productFiltered.amount,
+        description: productFiltered.description,
+      });
+    }
+
+    if (this.ref.data.event.action == 'Vender produto') {
+      this.getProductDatas();
+    }
     this.renderDropdown = true;
   }
 
@@ -181,33 +227,34 @@ export class ProcuctFormComponent implements OnInit, OnDestroy {
   }
 
   handleSubmitSaleProduct(): void {
-    if (this.saleProductForm.value && this.saleProductForm.valid) {
+    if (this.saleProductForm.valid) {
+      // Pega o rawValue e converte para number, garantindo never null/undefined
+      const rawAmount = this.saleProductForm.value.amount;
+      const amountNumber = rawAmount != null ? Number(rawAmount) : 0;
+
       const requestDatas: SaleProductRequest = {
-        amount: this.saleProductForm.value.amount as number,
+        amount: amountNumber,
         product_id: this.saleProductForm.value.product_id as string,
       };
+
       this.productService
         .saleProduct(requestDatas)
         .pipe(takeUntil(this.destroy$))
         .subscribe({
-          next: (response) => {
-            this.saleProductForm.reset();
-            this.getProductDatas();
+          next: (res) => {
             this.messageService.add({
               severity: 'success',
               summary: 'Sucesso',
-              detail: 'Venda efetuada com sucesso!',
+              detail: `Venda efetuada!`,
               life: 2500,
             });
-            this.router.navigate(['/dashboard']);
+            this.getProductDatas();
           },
           error: (err) => {
-            console.log(err);
-            this.saleProductForm.reset();
             this.messageService.add({
               severity: 'error',
               summary: 'Erro',
-              detail: 'Erro ao vender produto!',
+              detail: err.error?.message || 'Não foi possível efetuar venda',
               life: 2500,
             });
           },
@@ -218,18 +265,18 @@ export class ProcuctFormComponent implements OnInit, OnDestroy {
   getProductSelectedDatas(productId: string): void {
     const allProducts = this.productAction.productDatas;
     if (allProducts.length > 0) {
-      const productFiltered = allProducts.filter(
-        (ele) => ele?.id === productId
+      const productFiltered = allProducts.find(
+        (ele) => String(ele?._id) === String(productId)
       );
+      console.log('filtered: ', productFiltered);
       if (productFiltered) {
-        this.productSelectedDatas = productFiltered[0];
-
+        this.productSelectedDatas = productFiltered;
+        console.log('Setou os valores');
         this.editProductForm.setValue({
-          name: this.productSelectedDatas.name,
-          price: this.productSelectedDatas.price,
-          amount: this.productSelectedDatas.amount,
-          description: this.productSelectedDatas.description,
-          // category_id: this.productSelectedDatas.category.id,
+          name: productFiltered.name,
+          price: productFiltered.price,
+          amount: productFiltered.amount,
+          description: productFiltered.description,
         });
       }
     }

@@ -66,6 +66,9 @@ export class ProductsHomeComponent implements OnDestroy, OnInit {
 
   handleProductAction(event: EventAction): void {
     if (event) {
+      console.log('=== Dados antes de abrir o modal: ===');
+      console.log(this.productDatas);
+
       this.ref = this.dialogService.open(ProcuctFormComponent, {
         header: event?.action,
         width: '70%',
@@ -81,6 +84,23 @@ export class ProductsHomeComponent implements OnDestroy, OnInit {
         next: () => this.getAPIProductsData(),
       });
     }
+  }
+
+  private openProductModal(event: EventAction): void {
+    this.ref = this.dialogService.open(ProcuctFormComponent, {
+      header: event?.action,
+      width: '70%',
+      contentStyle: { overflow: 'auto' },
+      baseZIndex: 10000,
+      maximizable: true,
+      data: {
+        event: event,
+        productDatas: this.productDatas,
+      },
+    });
+    this.ref.onClose.pipe(takeUntil(this.destroy$)).subscribe({
+      next: () => this.getAPIProductsData(),
+    });
   }
 
   handleDeleteProductAction(evento: {

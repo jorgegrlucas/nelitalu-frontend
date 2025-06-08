@@ -54,7 +54,7 @@ export class CategoriesHomeComponent implements OnInit, OnDestroy {
             detail: 'Erro ao buscar categorias!',
             life: 3000,
           });
-          this.router.navigate(['/dashboard']);
+          this.router.navigate(['/home']);
         },
       });
   }
