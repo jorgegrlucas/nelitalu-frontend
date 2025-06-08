@@ -44,6 +44,46 @@ export class CartComponent implements OnInit {
     });
   }
 
+  increaseQuantity(cartItemId: string, currentQuantity: number) {
+    const newQuantity = currentQuantity + 1;
+    this.cartService.updateCartItemQuantity(cartItemId, newQuantity).subscribe({
+      next: () => {
+        this.cartItems = this.cartItems.map((item) => {
+          if (item._id === cartItemId) {
+            item.quantity = newQuantity;
+          }
+          return item;
+        });
+      },
+      error: (err: any) => {
+        console.error('Erro ao aumentar quantidade:', err);
+      },
+    });
+  }
+
+  decreaseQuantity(cartItemId: string, currentQuantity: number) {
+    const newQuantity = currentQuantity - 1;
+    this.cartService.updateCartItemQuantity(cartItemId, newQuantity).subscribe({
+      next: () => {
+        if (newQuantity <= 0) {
+          this.cartItems = this.cartItems.filter(
+            (item) => item._id !== cartItemId
+          );
+        } else {
+          this.cartItems = this.cartItems.map((item) => {
+            if (item._id === cartItemId) {
+              item.quantity = newQuantity;
+            }
+            return item;
+          });
+        }
+      },
+      error: (err: any) => {
+        console.error('Erro ao diminuir quantidade:', err);
+      },
+    });
+  }
+
   removeFromCart(cartItemId: string) {
     this.cartService.removeFromCart(cartItemId).subscribe({
       next: () => {
@@ -70,7 +110,13 @@ export class CartComponent implements OnInit {
   }
 
   getSubtotal(): number {
-    return this.cartItems.reduce((total, item) => total + item.jewel.price, 0);
+    return this.cartItems.reduce((total, item) => {
+      return total + item.jewel.price * item.quantity;
+    }, 0);
+  }
+
+  getTotalItems(): number {
+    return this.cartItems.reduce((total, item) => total + item.quantity, 0);
   }
 
   showCheckoutDialog() {
@@ -114,6 +160,7 @@ export class CartComponent implements OnInit {
               },
             })
             .render('#paypal-button-container'); // Um container no teu template
+          this.checkoutDialogVisible = false;
         },
         error: (err) => {
           console.error('Erro ao criar order:', err);

@@ -3,7 +3,6 @@
 
 <div class="product-grid">
   <div class="product-card" *ngFor="let jewel of productDatas">
-    <!-- <img [src]="jewel.thumbnail" alt="{{ jewel.name }}" class="product-img" /> -->
     <div class="product-name">{{ jewel.name }}</div>
     <div class="product-name">{{ jewel.description }}</div>
     <div class="product-price">
@@ -27,7 +26,24 @@
         type="button"
         icon="pi pi-shopping-cart"
         class="p-button-rounded p-button-success"
-        (click)="addToCart(jewel._id)"
+        (click)="toggleCart(jewel._id)"
+      ></button>
+    </div>
+
+    <!-- Se o item está no carrinho, exibe controle de quantidade -->
+    <div class="quantity-controls" *ngIf="cartItems[jewel._id]">
+      <button
+        pButton
+        icon="pi pi-minus"
+        class="p-button-rounded p-button-secondary"
+        (click)="decreaseQuantity(jewel._id)"
+      ></button>
+      <span class="quantity-text">{{ cartItems[jewel._id].quantity }}</span>
+      <button
+        pButton
+        icon="pi pi-plus"
+        class="p-button-rounded p-button-secondary"
+        (click)="increaseQuantity(jewel._id)"
       ></button>
     </div>
   </div>

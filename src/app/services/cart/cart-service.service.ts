@@ -19,13 +19,13 @@ export class CartService {
 
   constructor(private http: HttpClient, private cookie: CookieService) {}
 
-  addToCart(jewelId: number) {
-    return this.http.post(
-      `${this.API_URL}/cart/add`,
-      { jewelId },
-      this.httpOptions
-    );
-  }
+  // addToCart(jewelId: number) {
+  //   return this.http.post(
+  //     `${this.API_URL}/cart/add`,
+  //     { jewelId },
+  //     this.httpOptions
+  //   );
+  // }
 
   getCartItems(): Observable<any[]> {
     return this.http.get<any[]>(`${this.API_URL}/cart`, this.httpOptions);
@@ -35,6 +35,36 @@ export class CartService {
     return this.http.delete(
       `${this.API_URL}/cart/${cartItemId}`,
       this.httpOptions
+    );
+  }
+
+  // updateCartItemQuantity(cartItemId: string, quantity: number) {
+  //   return this.http.post(
+  //     `${this.API_URL}/cart/update-quantity`,
+  //     {
+  //       cartItemId: cartItemId,
+  //       quantity: quantity,
+  //     },
+  //     this.httpOptions
+  //   );
+  // }
+  addToCart(jewelId: string, quantity: number = 1) {
+    const token = localStorage.getItem('token');
+    return this.http.post(
+      `${this.API_URL}/cart/add`, // 🔴 Usa a rota correta
+      { jewelId, quantity },
+      { headers: { Authorization: `Bearer ${token}` } }
+    );
+  }
+
+  updateCartItemQuantity(cartItemId: string, quantity?: number) {
+    const token = localStorage.getItem('token');
+    console.log('cartItemId: ', cartItemId);
+    console.log('quantity: ', quantity);
+    return this.http.post(
+      `${this.API_URL}/cart/update-quantity`,
+      { cartItemId, quantity },
+      { headers: { Authorization: `Bearer ${token}` } }
     );
   }
 }

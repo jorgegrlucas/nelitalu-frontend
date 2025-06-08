@@ -1,18 +1,35 @@
 <app-toolbar-navigation></app-toolbar-navigation>
 
-<h1>Meu Carrinho</h1>
+<h1>Meu Carrinho ({{ getTotalItems() }} itens)</h1>
 
 <div *ngIf="cartItems.length === 0">Seu carrinho está vazio.</div>
 
 <div class="cart-list" *ngIf="cartItems.length > 0">
   <div class="cart-item" *ngFor="let item of cartItems">
     <div class="item-info">
-      <strong>{{ item.jewel.name }}</strong>
-      <p>Preço: {{ item.jewel.price | currency : "BRL" }}</p>
+      <strong>{{ item.jewel.name }} ({{ item.quantity }}x)</strong>
+      <p>Preço unitário: {{ item.jewel.price | currency : "BRL" }}</p>
+      <p>Subtotal: {{ item.jewel.price * item.quantity | currency : "BRL" }}</p>
+
+      <div class="quantity-controls">
+        <button
+          pButton
+          icon="pi pi-minus"
+          class="p-button-rounded p-button-secondary"
+          (click)="decreaseQuantity(item._id, item.quantity)"
+        ></button>
+        <span>{{ item.quantity }}</span>
+        <button
+          pButton
+          icon="pi pi-plus"
+          class="p-button-rounded p-button-secondary"
+          (click)="increaseQuantity(item._id, item.quantity)"
+        ></button>
+      </div>
     </div>
+
     <button
       pButton
-      type="button"
       icon="pi pi-trash"
       class="p-button-rounded p-button-danger"
       (click)="removeFromCart(item._id)"
@@ -28,7 +45,7 @@
     label="Finalizar Compra"
     icon="pi pi-check"
     class="p-button-success"
-    (click)="finalizePurchase()"
+    (click)="checkoutDialogVisible = true"
   ></button>
 </div>
 
@@ -58,4 +75,9 @@
     ></button>
   </div>
 </p-dialog>
-<div id="paypal-button-container"></div>
+
+<p-card>
+  <div class="paypal-container">
+    <div id="paypal-button-container"></div>
+  </div>
+</p-card>

@@ -18,6 +18,9 @@ export class PageComponent implements OnInit, OnDestroy {
   public productDatas: Array<GetAllproductsResponse> = [];
   public likedProductsIds: number[] = [];
   public currentUserId: string = '683ddf9e94c4253cd02c1720';
+  cartItems: {
+    [productId: string]: { cartItemId: string; quantity: number };
+  } = {};
 
   constructor(
     private productsService: ProductsService,
@@ -31,6 +34,7 @@ export class PageComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.getServiceProductdDatas();
     this.loadUserFavorites();
+    this.loadCartItems();
   }
 
   ngOnDestroy(): void {
@@ -85,6 +89,24 @@ export class PageComponent implements OnInit, OnDestroy {
       });
   }
 
+  loadCartItems() {
+    this.cartService.getCartItems().subscribe({
+      next: (cartItems) => {
+        // Cria um dicionário: jewelId -> { cartItemId, quantity }
+        this.cartItems = {};
+        cartItems.forEach((item) => {
+          this.cartItems[item.jewel._id] = {
+            cartItemId: item._id,
+            quantity: item.quantity,
+          };
+        });
+      },
+      error: (err) => {
+        console.error('Erro ao carregar carrinho:', err);
+      },
+    });
+  }
+
   toggleLike(productId: number) {
     const isLiked = this.likedProductsIds.includes(productId);
 
@@ -107,15 +129,14 @@ export class PageComponent implements OnInit, OnDestroy {
     }
   }
 
-  addToCart(jewelId: number) {
-    this.cartService.addToCart(jewelId).subscribe({
+  addToCart(jewelId: string) {
+    this.cartService.addToCart(jewelId, 1).subscribe({
       next: () => {
-        console.log('Produto adicionado ao carrinho!');
         this.messageService.add({
           severity: 'success',
           summary: 'Sucesso',
-          detail: 'Adicionado ao carrinho',
-          life: 2500,
+          detail: 'Produto adicionado ao carrinho',
+          life: 2000,
         });
       },
       error: (err) => {
@@ -124,9 +145,66 @@ export class PageComponent implements OnInit, OnDestroy {
           severity: 'error',
           summary: 'Erro',
           detail: 'Erro ao adicionar no carrinho',
-          life: 2500,
+          life: 2000,
         });
       },
     });
+  }
+
+  toggleCart(productId: any) {
+    if (this.cartItems[productId]) {
+      // Já está no carrinho: remove
+      delete this.cartItems[productId];
+    } else {
+      // Adiciona com quantidade 1
+      this.cartItems[productId] = { cartItemId: '', quantity: 1 };
+
+      this.addToCart(productId); // Chama a API real (opcional)
+    }
+  }
+  increaseQuantity(productId: string) {
+    const cartItem = this.cartItems[productId];
+    if (cartItem) {
+      const newQuantity = cartItem.quantity + 1;
+      this.cartService
+        .updateCartItemQuantity(cartItem.cartItemId, newQuantity)
+        .subscribe({
+          next: () => {
+            cartItem.quantity = newQuantity; // atualiza na view
+          },
+          error: (err) => {
+            console.error('Erro ao aumentar quantidade:', err);
+          },
+        });
+    }
+  }
+
+  decreaseQuantity(productId: string) {
+    const cartItem = this.cartItems[productId];
+    if (cartItem) {
+      const newQuantity = cartItem.quantity - 1;
+      if (newQuantity <= 0) {
+        // Remove item do carrinho
+        this.cartService.removeFromCart(cartItem.cartItemId).subscribe({
+          next: () => {
+            delete this.cartItems[productId];
+          },
+          error: (err) => {
+            console.error('Erro ao remover item:', err);
+          },
+        });
+      } else {
+        this.cartService
+          .updateCartItemQuantity(cartItem.cartItemId, newQuantity)
+          .subscribe({
+            next: () => {
+              cartItem.quantity = newQuantity; // atualiza na view
+            },
+            error: (err) => {
+              console.error('Erro ao diminuir quantidade:', err);
+            },
+          });
+      }
+    }
   }
 }

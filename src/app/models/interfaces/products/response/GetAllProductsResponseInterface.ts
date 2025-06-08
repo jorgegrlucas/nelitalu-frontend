@@ -8,5 +8,5 @@ export interface GetAllproductsResponse {
     id: string;
     name: string;
   };
-  _id: number;
+  _id: any;
 }
