@@ -39,12 +39,26 @@ export class CartService {
     );
   }
 
-  updateCartItemQuantity(cartItemId: string, quantity?: number) {
+  updateCartItemQuantity(
+    cartItemId: string,
+    type: string,
+    productId: string,
+    quantity?: number
+  ) {
     const token = localStorage.getItem('token');
-    return this.http.post(
-      `${this.API_URL}/cart/update-quantity`,
-      { cartItemId, quantity },
-      { headers: { Authorization: `Bearer ${token}` } }
-    );
+
+    if (type == 'page') {
+      return this.http.post(
+        `${this.API_URL}/cart/update-quantity`,
+        { cartItemId, quantity, productId },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+    } else {
+      return this.http.post(
+        `${this.API_URL}/cart/update-quantity`,
+        { cartItemId, quantity, productId },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+    }
   }
 }

@@ -62,7 +62,7 @@ export class HomeComponent implements OnDestroy {
             this.messageService.add({
               severity: 'error',
               summary: 'Error',
-              detail: 'Erro ao fazer login',
+              detail: err.error?.message || 'Username/password não conferem',
               life: 2000,
             });
           },

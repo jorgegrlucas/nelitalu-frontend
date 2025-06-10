@@ -272,3 +272,32 @@ button.p-button.small-btn {
   width: 100%;
   margin-bottom: 1rem;
 }
+
+.page-container {
+  padding: 0 1rem; /* espaçamento lateral */
+  margin-top: 1rem; /* dá um respiro abaixo da toolbar */
+}
+
+.page-title {
+  margin: 0 auto 1.5rem; /* centraliza e espaça abaixo */
+  max-width: 800px; /* evita que fique muito esticado */
+  font-size: 2rem;
+  text-align: center; /* ou left, conforme preferência */
+}
+
+/* Ajuste na grid para espaçar melhor os cards */
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 1.5rem;
+}
+
+/* Opcional: dá um padding interno aos cards e um box-shadow suave */
+.product-card {
+  padding: 1rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}

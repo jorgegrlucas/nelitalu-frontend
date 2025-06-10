@@ -46,42 +46,52 @@ export class CartComponent implements OnInit {
 
   increaseQuantity(cartItemId: string, currentQuantity: number) {
     const newQuantity = currentQuantity + 1;
-    this.cartService.updateCartItemQuantity(cartItemId, newQuantity).subscribe({
-      next: () => {
-        this.cartItems = this.cartItems.map((item) => {
-          if (item._id === cartItemId) {
-            item.quantity = newQuantity;
-          }
-          return item;
-        });
-      },
-      error: (err: any) => {
-        console.error('Erro ao aumentar quantidade:', err);
-      },
-    });
-  }
-
-  decreaseQuantity(cartItemId: string, currentQuantity: number) {
-    const newQuantity = currentQuantity - 1;
-    this.cartService.updateCartItemQuantity(cartItemId, newQuantity).subscribe({
-      next: () => {
-        if (newQuantity <= 0) {
-          this.cartItems = this.cartItems.filter(
-            (item) => item._id !== cartItemId
-          );
-        } else {
+    this.cartService
+      .updateCartItemQuantity(cartItemId, 'cart', '1', newQuantity)
+      .subscribe({
+        next: () => {
           this.cartItems = this.cartItems.map((item) => {
             if (item._id === cartItemId) {
               item.quantity = newQuantity;
             }
             return item;
           });
-        }
-      },
-      error: (err: any) => {
-        console.error('Erro ao diminuir quantidade:', err);
-      },
-    });
+        },
+        error: (err: any) => {
+          console.error('Erro ao aumentar quantidade:', err);
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Erro',
+            detail: err.error.message,
+            life: 2000,
+          });
+        },
+      });
+  }
+
+  decreaseQuantity(cartItemId: string, currentQuantity: number) {
+    const newQuantity = currentQuantity - 1;
+    this.cartService
+      .updateCartItemQuantity(cartItemId, 'cart', '1', newQuantity)
+      .subscribe({
+        next: () => {
+          if (newQuantity <= 0) {
+            this.cartItems = this.cartItems.filter(
+              (item) => item._id !== cartItemId
+            );
+          } else {
+            this.cartItems = this.cartItems.map((item) => {
+              if (item._id === cartItemId) {
+                item.quantity = newQuantity;
+              }
+              return item;
+            });
+          }
+        },
+        error: (err: any) => {
+          console.error('Erro ao diminuir quantidade:', err);
+        },
+      });
   }
 
   removeFromCart(cartItemId: string) {
@@ -91,8 +101,8 @@ export class CartComponent implements OnInit {
           (item) => item._id !== cartItemId
         );
         this.messageService.add({
-          severity: 'sucess',
-          summary: 'Successo',
+          severity: 'success',
+          summary: 'Sucesso',
           detail: 'Removido com sucesso',
           life: 2000,
         });

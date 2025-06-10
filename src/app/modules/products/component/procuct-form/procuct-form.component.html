@@ -1,69 +1,32 @@
-<div class="div" *ngIf="productAction.event.action === addProductAction">
+<div *ngIf="productAction.event.action === addProductAction">
   <form [formGroup]="addProductForm" (ngSubmit)="handleSubmitAddProduct()">
-    <div class="card flex flex-column md:flex-column gap-3">
-      <input pInputText placeholder="Nome" formControlName="name" />
-      <input pInputText placeholder="Preço" formControlName="price" />
-      <input pInputText placeholder="Descrição" formControlName="description" />
-      <input pInputNumber placeholder="Quantidade" formControlName="amount" />
-
-      <div
-        class="flex flex-row justify-content-center align-content-center align-items-center m-1"
-      >
-        <p-button
-          [disabled]="!addProductForm.valid"
-          type="submit"
-          label="Concluir"
-        ></p-button>
+    <div class="p-fluid formgrid grid">
+      <div class="field col-12 md:col-6">
+        <label for="name"> Nome <span class="required">*</span> </label>
+        <input id="name" pInputText formControlName="name" required />
       </div>
-    </div>
-  </form>
-</div>
-<div *ngIf="productAction.event.action === editProductAction">
-  <form [formGroup]="editProductForm" (ngSubmit)="handleSubmitEditProduct()">
-    <div class="card flex flex-column md:flex-column gap-3">
-      <input pInputText placeholder="Nome" formControlName="name" />
-      <input pInputText placeholder="Preço" formControlName="price" />
-      <input pInputText placeholder="Descrição" formControlName="description" />
-      <input pInputNumber placeholder="Quantidade" formControlName="amount" />
-
-      <div
-        class="flex flex-row justify-content-center align-content-center align-items-center m-1"
-      >
-        <p-button
-          [disabled]="!editProductForm.valid"
-          type="submit"
-          label="Concluir"
-        ></p-button>
+      <div class="field col-12 md:col-6">
+        <label for="price"> Preço <span class="required">*</span> </label>
+        <input id="price" pInputText formControlName="price" required />
       </div>
-    </div>
-  </form>
-</div>
-
-<div *ngIf="productAction.event.action === saleProductAction">
-  <form [formGroup]="saleProductForm" (ngSubmit)="handleSubmitSaleProduct()">
-    <div class="card p-fluid">
-      <div class="sale-row">
-        <p-dropdown
-          class="w-75"
-          [options]="productDatas"
-          [(ngModel)]="saleProductSelected"
-          optionLabel="name"
-          optionValue="id"
-          formControlName="product_id"
-          placeholder="Selecione um produto"
-        ></p-dropdown>
-
+      <div class="field col-12">
+        <label for="description">
+          Descrição <span class="required">*</span>
+        </label>
         <input
-          pInputNumber
-          class="w-25"
-          placeholder="Quantidade"
-          formControlName="amount"
+          id="description"
+          pInputText
+          formControlName="description"
+          required
         />
       </div>
-
-      <div class="button-row">
+      <div class="field col-12 md:col-4">
+        <label for="amount"> Quantidade <span class="required">*</span> </label>
+        <input id="amount" pInputNumber formControlName="amount" required />
+      </div>
+      <div class="field col-12 flex justify-content-center">
         <p-button
-          [disabled]="!saleProductForm.valid"
+          [disabled]="!addProductForm.valid"
           type="submit"
           label="Concluir"
         ></p-button>

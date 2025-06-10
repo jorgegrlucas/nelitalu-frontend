@@ -1,50 +1,52 @@
 <app-toolbar-navigation></app-toolbar-navigation>
-<h1>Produtos à Venda</h1>
 
-<div class="product-grid">
-  <div class="product-card" *ngFor="let jewel of productDatas">
-    <div class="product-name">{{ jewel.name }}</div>
-    <div class="product-name">{{ jewel.description }}</div>
-    <div class="product-price">
-      {{ jewel.price | currency : "BRL" : "symbol" : "1.2-2" }}
-    </div>
-    <div class="product-buttons">
-      <button
-        pButton
-        type="button"
-        icon="pi pi-heart"
-        class="small-btn p-button-rounded"
-        [ngClass]="{
-          'p-button-danger': likedProductsIds.includes(jewel._id),
-          'p-button-outlined': !likedProductsIds.includes(jewel._id)
-        }"
-        (click)="toggleLike(jewel._id)"
-      ></button>
+<div class="page-container">
+  <h1 class="page-title">Produtos à Venda</h1>
+  <div class="product-grid">
+    <div class="product-card" *ngFor="let jewel of productDatas">
+      <div class="product-name">{{ jewel.name }}</div>
+      <div class="product-name">{{ jewel.description }}</div>
+      <div class="product-price">
+        {{ jewel.price | currency : "BRL" : "symbol" : "1.2-2" }}
+      </div>
+      <div class="product-buttons">
+        <button
+          pButton
+          type="button"
+          icon="pi pi-heart"
+          class="small-btn p-button-rounded"
+          [ngClass]="{
+            'p-button-danger': likedProductsIds.includes(jewel._id),
+            'p-button-outlined': !likedProductsIds.includes(jewel._id)
+          }"
+          (click)="toggleLike(jewel._id)"
+        ></button>
 
-      <button
-        pButton
-        type="button"
-        icon="pi pi-shopping-cart"
-        class="small-btn p-button-rounded p-button-success"
-        (click)="toggleCart(jewel._id)"
-      ></button>
-    </div>
+        <button
+          pButton
+          type="button"
+          icon="pi pi-shopping-cart"
+          class="small-btn p-button-rounded p-button-success"
+          (click)="toggleCart(jewel._id)"
+        ></button>
+      </div>
 
-    <div class="quantity-controls" *ngIf="cartItems[jewel._id]">
-      <button
-        pButton
-        icon="pi pi-minus"
-        class="small-btn p-button-rounded"
-        (click)="decreaseQuantity(jewel._id)"
-      ></button>
+      <div class="quantity-controls" *ngIf="cartItems[jewel._id]">
+        <button
+          pButton
+          icon="pi pi-minus"
+          class="small-btn p-button-rounded"
+          (click)="decreaseQuantity(jewel._id)"
+        ></button>
 
-      <span class="quantity-text">{{ cartItems[jewel._id].quantity }}</span>
-      <button
-        pButton
-        icon="pi pi-plus"
-        class="small-btn p-button-rounded"
-        (click)="increaseQuantity(jewel._id)"
-      ></button>
+        <span class="quantity-text">{{ cartItems[jewel._id].quantity }}</span>
+        <button
+          pButton
+          icon="pi pi-plus"
+          class="small-btn p-button-rounded"
+          (click)="increaseQuantity(jewel._id)"
+        ></button>
+      </div>
     </div>
   </div>
 </div>

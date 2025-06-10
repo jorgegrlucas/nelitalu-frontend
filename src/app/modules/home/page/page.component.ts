@@ -197,13 +197,24 @@ export class PageComponent implements OnInit, OnDestroy {
     if (cartItem) {
       const newQuantity = cartItem.quantity + 1;
       this.cartService
-        .updateCartItemQuantity(cartItem.cartItemId, newQuantity)
+        .updateCartItemQuantity(
+          cartItem.cartItemId,
+          'page',
+          productId,
+          newQuantity
+        )
         .subscribe({
           next: () => {
             cartItem.quantity = newQuantity;
           },
           error: (err) => {
             console.error('Erro ao aumentar quantidade:', err);
+            this.messageService.add({
+              severity: 'error',
+              summary: 'Erro',
+              detail: err.error.message,
+              life: 2000,
+            });
           },
         });
     }
@@ -224,7 +235,12 @@ export class PageComponent implements OnInit, OnDestroy {
         });
       } else {
         this.cartService
-          .updateCartItemQuantity(cartItem.cartItemId, newQuantity)
+          .updateCartItemQuantity(
+            cartItem.cartItemId,
+            'page',
+            productId,
+            newQuantity
+          )
           .subscribe({
             next: () => {
               cartItem.quantity = newQuantity;

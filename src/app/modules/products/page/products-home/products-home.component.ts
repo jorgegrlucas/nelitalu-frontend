@@ -124,7 +124,7 @@ export class ProductsHomeComponent implements OnDestroy, OnInit {
           next: (res) => {
             if (res) {
               this.messageService.add({
-                severity: 'sucess',
+                severity: 'success',
                 summary: 'Successo',
                 detail: 'Removido com sucesso',
                 life: 2000,
