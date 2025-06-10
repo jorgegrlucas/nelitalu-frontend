@@ -1,70 +1,35 @@
-body {
-  font-family: Arial, sans-serif;
-  margin: 2rem;
-  background-color: #f9f9f9;
-}
-
-.product-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-  gap: 1rem;
-}
-
+/* Ajustes gerais de espaçamento dentro do card */
 .product-card {
-  background: #fff;
-  border-radius: 8px;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 1rem;
-  transition: transform 0.2s ease;
+  padding: 1rem; /* mantém o padding do card */
+  row-gap: 0.75rem; /* espaço vertical entre linhas internas */
 }
 
-.product-card:hover {
-  transform: scale(1.03);
-}
-
-.product-img {
-  width: 100px;
-  height: 100px;
-  object-fit: cover;
-  border-radius: 4px;
-  margin-bottom: 0.5rem;
-}
-
-.product-name {
-  font-weight: bold;
-  margin: 0.5rem 0;
-  text-align: center;
-}
-
-.product-price {
-  color: #28a745;
-  font-size: 1rem;
-  margin-bottom: 0.5rem;
-}
-
+/* Botões de ação (❤️ 🛒) */
 .product-buttons {
   display: flex;
-  justify-content: space-between;
-  width: 100%;
-  gap: 0.5rem;
+  justify-content: center; /* centra os botões */
+  gap: 0.5rem; /* espaço uniforme entre heart e cart */
+  margin-bottom: 0.5rem; /* separa do preço ou do controle de quantidade */
 }
 
-.p-button {
-  flex: 1;
-}
-
+/* Controle de quantidade (➖ 1 ➕) */
 .quantity-controls {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
-  margin-top: 0.5rem;
+  justify-content: center; /* centra todo o grupo horizontalmente */
+  gap: 0.25rem; /* espaço menor entre cada botão e o número */
+  margin-top: 0.25rem; /* separa um pouco das ações acima */
 }
 
+/* Classe para botões pequenos (PrimeNG override já aplicado) */
+button.p-button.small-btn {
+  /* width/height/font-size/border-radius já definidos em global */
+}
+
+/* Texto de quantidade */
 .quantity-text {
-  min-width: 20px;
+  min-width: 24px; /* um pouquinho mais largo para não “colar” */
   text-align: center;
   font-weight: bold;
+  margin: 0 0.25rem; /* margem horizontal extra em volta do número */
 }

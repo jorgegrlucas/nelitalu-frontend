@@ -13,7 +13,7 @@
         pButton
         type="button"
         icon="pi pi-heart"
-        class="p-button-rounded"
+        class="small-btn p-button-rounded"
         [ngClass]="{
           'p-button-danger': likedProductsIds.includes(jewel._id),
           'p-button-outlined': !likedProductsIds.includes(jewel._id)
@@ -25,7 +25,7 @@
         pButton
         type="button"
         icon="pi pi-shopping-cart"
-        class="p-button-rounded p-button-success"
+        class="small-btn p-button-rounded p-button-success"
         (click)="toggleCart(jewel._id)"
       ></button>
     </div>
@@ -35,14 +35,15 @@
       <button
         pButton
         icon="pi pi-minus"
-        class="p-button-rounded p-button-secondary"
+        class="small-btn p-button-rounded"
         (click)="decreaseQuantity(jewel._id)"
       ></button>
+
       <span class="quantity-text">{{ cartItems[jewel._id].quantity }}</span>
       <button
         pButton
         icon="pi pi-plus"
-        class="p-button-rounded p-button-secondary"
+        class="small-btn p-button-rounded"
         (click)="increaseQuantity(jewel._id)"
       ></button>
     </div>

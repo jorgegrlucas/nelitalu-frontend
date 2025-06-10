@@ -151,17 +151,45 @@ export class PageComponent implements OnInit, OnDestroy {
     });
   }
 
-  toggleCart(productId: any) {
-    if (this.cartItems[productId]) {
-      // Já está no carrinho: remove
-      delete this.cartItems[productId];
+  toggleCart(productId: string) {
+    const existing = this.cartItems[productId];
+    if (existing) {
+      // Se já existe, removemos
+      this.cartService.removeFromCart(existing.cartItemId).subscribe({
+        next: () => {
+          delete this.cartItems[productId];
+        },
+        error: (err) => console.error('Erro ao remover do carrinho:', err),
+      });
     } else {
-      // Adiciona com quantidade 1
-      this.cartItems[productId] = { cartItemId: '', quantity: 1 };
-
-      this.addToCart(productId); // Chama a API real (opcional)
+      // Adiciona com quantidade 1, mas espera o retorno da API
+      this.cartService.addToCart(productId, 1).subscribe({
+        next: (createdItem: any) => {
+          // supondo que o endpoint retorne o item criado, incluindo _id e quantity
+          this.cartItems[productId] = {
+            cartItemId: createdItem._id,
+            quantity: createdItem.quantity,
+          };
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Sucesso',
+            detail: 'Produto adicionado ao carrinho',
+            life: 2000,
+          });
+        },
+        error: (err) => {
+          console.error('Erro ao adicionar no carrinho:', err);
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Erro',
+            detail: 'Não foi possível adicionar ao carrinho',
+            life: 2000,
+          });
+        },
+      });
     }
   }
+
   increaseQuantity(productId: string) {
     const cartItem = this.cartItems[productId];
     if (cartItem) {

@@ -1,53 +1,74 @@
 <app-toolbar-navigation></app-toolbar-navigation>
 
-<h1>Meu Carrinho ({{ getTotalItems() }} itens)</h1>
+<section class="cart-container">
+  <h1 class="cart-title">Meu Carrinho ({{ getTotalItems() }} itens)</h1>
 
-<div *ngIf="cartItems.length === 0">Seu carrinho está vazio.</div>
+  <ng-container *ngIf="cartItems.length; else emptyCart">
+    <ul class="cart-list">
+      <li class="cart-item" *ngFor="let item of cartItems">
+        <div class="item-info">
+          <div class="item-header">
+            <strong class="item-name">{{ item.jewel.name }}</strong>
+            <span class="item-qty">({{ item.quantity }}x)</span>
+          </div>
+          <p class="item-price">
+            Preço unitário:
+            <span class="highlight">{{
+              item.jewel.price | currency : "BRL"
+            }}</span>
+          </p>
+          <p class="item-subtotal">
+            Subtotal:
+            <span class="highlight">{{
+              item.jewel.price * item.quantity | currency : "BRL"
+            }}</span>
+          </p>
 
-<div class="cart-list" *ngIf="cartItems.length > 0">
-  <div class="cart-item" *ngFor="let item of cartItems">
-    <div class="item-info">
-      <strong>{{ item.jewel.name }} ({{ item.quantity }}x)</strong>
-      <p>Preço unitário: {{ item.jewel.price | currency : "BRL" }}</p>
-      <p>Subtotal: {{ item.jewel.price * item.quantity | currency : "BRL" }}</p>
+          <div class="quantity-controls mt-sm">
+            <button
+              pButton
+              icon="pi pi-minus"
+              class="small-btn p-button-rounded"
+              (click)="decreaseQuantity(item._id, item.quantity)"
+            ></button>
+            <span class="quantity-text">{{ item.quantity }}</span>
+            <button
+              pButton
+              icon="pi pi-plus"
+              class="small-btn p-button-rounded"
+              (click)="increaseQuantity(item._id, item.quantity)"
+            ></button>
+          </div>
+        </div>
 
-      <div class="quantity-controls">
         <button
           pButton
-          icon="pi pi-minus"
-          class="p-button-rounded p-button-secondary"
-          (click)="decreaseQuantity(item._id, item.quantity)"
+          icon="pi pi-trash"
+          class="p-button-rounded p-button-danger ml-sm"
+          (click)="removeFromCart(item._id)"
         ></button>
-        <span>{{ item.quantity }}</span>
-        <button
-          pButton
-          icon="pi pi-plus"
-          class="p-button-rounded p-button-secondary"
-          (click)="increaseQuantity(item._id, item.quantity)"
-        ></button>
-      </div>
+      </li>
+    </ul>
+
+    <div class="subtotal-container mt-lg">
+      <h3 class="subtotal-label">
+        Subtotal:
+        <span class="highlight">{{ getSubtotal() | currency : "BRL" }}</span>
+      </h3>
+      <button
+        pButton
+        label="Finalizar Compra"
+        icon="pi pi-check"
+        class="p-button-success ml-sm"
+        (click)="checkoutDialogVisible = true"
+      ></button>
     </div>
+  </ng-container>
 
-    <button
-      pButton
-      icon="pi pi-trash"
-      class="p-button-rounded p-button-danger"
-      (click)="removeFromCart(item._id)"
-    ></button>
-  </div>
-</div>
-
-<!-- Subtotal -->
-<div *ngIf="cartItems.length > 0" class="subtotal-container">
-  <h3>Subtotal: {{ getSubtotal() | currency : "BRL" }}</h3>
-  <button
-    pButton
-    label="Finalizar Compra"
-    icon="pi pi-check"
-    class="p-button-success"
-    (click)="checkoutDialogVisible = true"
-  ></button>
-</div>
+  <ng-template #emptyCart>
+    <div class="empty-cart">Seu carrinho está vazio.</div>
+  </ng-template>
+</section>
 
 <!-- Modal de confirmação -->
 <p-dialog
@@ -63,20 +84,20 @@
       pButton
       label="Cancelar"
       icon="pi pi-times"
-      (click)="checkoutDialogVisible = false"
       class="p-button-text"
+      (click)="checkoutDialogVisible = false"
     ></button>
     <button
       pButton
       label="Confirmar"
       icon="pi pi-check"
-      (click)="finalizePurchase()"
       class="p-button-success"
+      (click)="finalizePurchase()"
     ></button>
   </div>
 </p-dialog>
 
-<p-card>
+<p-card class="paypal-card mt-lg">
   <div class="paypal-container">
     <div id="paypal-button-container"></div>
   </div>

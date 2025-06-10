@@ -42,6 +42,7 @@ export class ToolbarNavigationComponent implements OnInit {
     this.dialogService.open(ProcuctFormComponent, {
       header: saleProductAction,
       width: '70%',
+      height: '50%',
       contentStyle: { overflow: 'auto' },
       baseZIndex: 10000,
       maximizable: true,

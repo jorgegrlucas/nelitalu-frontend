@@ -1,18 +1,13 @@
+// src/app/app-routing.module.ts
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 import { HomeComponent } from './modules/home/home.component';
 import { AuthGuardService } from './guards/auth-guard.service';
 
 const routes: Routes = [
-  {
-    path: '',
-    redirectTo: 'home',
-    pathMatch: 'full',
-  },
-  {
-    path: 'home',
-    component: HomeComponent,
-  },
+  { path: '', redirectTo: 'home', pathMatch: 'full' },
+  { path: 'home', component: HomeComponent },
+
   {
     path: 'dashboard',
     loadChildren: () =>
@@ -20,6 +15,8 @@ const routes: Routes = [
         (m) => m.DashboardModule
       ),
     canActivate: [AuthGuardService],
+    canLoad: [AuthGuardService],
+    data: { roles: ['admin'] },
   },
   {
     path: 'products',
@@ -28,6 +25,8 @@ const routes: Routes = [
         (m) => m.ProductsModule
       ),
     canActivate: [AuthGuardService],
+    canLoad: [AuthGuardService],
+    data: { roles: ['admin'] },
   },
   {
     path: 'categories',
@@ -36,18 +35,21 @@ const routes: Routes = [
         (m) => m.CategoriesModule
       ),
     canActivate: [AuthGuardService],
+    canLoad: [AuthGuardService],
   },
   {
     path: 'page',
     loadChildren: () =>
       import('./modules/home/page/page.module').then((m) => m.PageModule),
     canActivate: [AuthGuardService],
+    canLoad: [AuthGuardService],
   },
   {
     path: 'cart',
     loadChildren: () =>
       import('./modules/cart/cart.module').then((m) => m.CartModule),
     canActivate: [AuthGuardService],
+    canLoad: [AuthGuardService],
   },
 ];
 
@@ -55,7 +57,6 @@ const routes: Routes = [
   imports: [
     RouterModule.forRoot(routes, {
       preloadingStrategy: PreloadAllModules,
-      // carregar os dados no main page
     }),
   ],
   exports: [RouterModule],

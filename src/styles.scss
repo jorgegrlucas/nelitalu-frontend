@@ -7,21 +7,21 @@ $card-background: #e5c6a2;
 $card-border: #eaaa61;
 $card-text: #5a4a42;
 
-
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
   font-family: sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
-    "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans",
-    "Helvetica Neue", sans-serif;
+    "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue",
+    sans-serif;
 
   &:focus {
     outline: none;
   }
 }
 
-html, body {
+html,
+body {
   background-color: $background-color;
   color: $text-color;
   font-size: 16px;
@@ -41,14 +41,17 @@ section {
   display: block;
 }
 
-ol, ul {
+ol,
+ul {
   list-style: none;
 }
 
-blockquote, q {
+blockquote,
+q {
   quotes: none;
 
-  &::before, &::after {
+  &::before,
+  &::after {
     content: "";
     content: none;
   }
@@ -79,7 +82,12 @@ textarea {
   resize: vertical;
 }
 
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   color: $text-color;
   margin-bottom: 0.5rem;
 }
@@ -107,7 +115,9 @@ button {
   }
 }
 
-input, select, textarea {
+input,
+select,
+textarea {
   border: 1px solid $border-color;
   padding: 0.5rem;
   border-radius: 4px;
@@ -207,10 +217,63 @@ input, select, textarea {
   margin-bottom: 0.5rem;
 }
 
+button.p-button.small-btn {
+  min-width: 0 !important;
+  width: 24px !important;
+  height: 24px !important;
+  line-height: 24px !important;
+  padding: 0 !important;
+  font-size: 1rem !important;
+  border-radius: 4px !important;
+}
+
+button.p-button.small-btn {
+  min-width: 0 !important;
+  width: 24px !important;
+  height: 24px !important;
+  line-height: 24px !important;
+  padding: 0 !important;
+  font-size: 1rem !important;
+  border-radius: 4px !important;
+}
+
+/* espaçamentos gerais dentro do card */
+.product-card {
+  padding: 1rem;
+  row-gap: 0.75rem;
+}
+
+/* ações ❤️🛒 */
 .product-buttons {
-  display: flex;
   justify-content: center;
   gap: 0.5rem;
   margin-top: 0.5rem;
 }
 
+/* – 1 + */
+.quantity-controls {
+  gap: 0.25rem;
+  margin-top: 0.5rem;
+}
+
+.quantity-text {
+  margin: 0 0.25rem;
+}
+
+/* Helpers de largura */
+.w-75 {
+  flex: 0 0 75%;
+}
+
+.w-25 {
+  flex: 0 0 25%;
+}
+
+/* Linha de formulário em flex */
+.sale-row {
+  display: flex;
+  align-items: center;
+  gap: 1rem; /* espaço entre campos */
+  width: 100%; /* para herdar o tamanho do container pai */
+  margin-bottom: 1rem;
+}
