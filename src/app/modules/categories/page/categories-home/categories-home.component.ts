@@ -47,7 +47,6 @@ export class CategoriesHomeComponent implements OnInit, OnDestroy {
           }
         },
         error: (err) => {
-          console.log(err);
           this.messageService.add({
             severity: 'error',
             summary: 'Erro',
@@ -87,7 +86,6 @@ export class CategoriesHomeComponent implements OnInit, OnDestroy {
             this.getAllCategories();
           },
           error: (err) => {
-            console.log(err);
             this.messageService.add({
               severity: 'error',
               summary: 'Erro',

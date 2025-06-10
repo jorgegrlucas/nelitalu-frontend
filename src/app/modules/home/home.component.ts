@@ -47,7 +47,6 @@ export class HomeComponent implements OnDestroy {
             if (response) {
               this.cookeService.set('USER_INFO', response?.token);
               localStorage.setItem('token', response.token);
-              // alert('Usuário logado');
               this.messageService.add({
                 severity: 'success',
                 summary: 'Sucesso',
@@ -66,7 +65,6 @@ export class HomeComponent implements OnDestroy {
               detail: 'Erro ao fazer login',
               life: 2000,
             });
-            console.log(err);
           },
         });
     }
@@ -79,7 +77,6 @@ export class HomeComponent implements OnDestroy {
         .subscribe({
           next: (response) => {
             if (response) {
-              // alert('Usuário criado');
               this.messageService.add({
                 severity: 'success',
                 summary: 'Sucesso',
@@ -97,7 +94,6 @@ export class HomeComponent implements OnDestroy {
               detail: 'Erro ao criar usuário',
               life: 2000,
             });
-            console.log(err);
           },
         });
     }

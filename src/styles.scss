@@ -237,20 +237,17 @@ button.p-button.small-btn {
   border-radius: 4px !important;
 }
 
-/* espaçamentos gerais dentro do card */
 .product-card {
   padding: 1rem;
   row-gap: 0.75rem;
 }
 
-/* ações ❤️🛒 */
 .product-buttons {
   justify-content: center;
   gap: 0.5rem;
   margin-top: 0.5rem;
 }
 
-/* – 1 + */
 .quantity-controls {
   gap: 0.25rem;
   margin-top: 0.5rem;
@@ -260,7 +257,6 @@ button.p-button.small-btn {
   margin: 0 0.25rem;
 }
 
-/* Helpers de largura */
 .w-75 {
   flex: 0 0 75%;
 }
@@ -269,11 +265,10 @@ button.p-button.small-btn {
   flex: 0 0 25%;
 }
 
-/* Linha de formulário em flex */
 .sale-row {
   display: flex;
   align-items: center;
-  gap: 1rem; /* espaço entre campos */
-  width: 100%; /* para herdar o tamanho do container pai */
+  gap: 1rem;
+  width: 100%;
   margin-bottom: 1rem;
 }

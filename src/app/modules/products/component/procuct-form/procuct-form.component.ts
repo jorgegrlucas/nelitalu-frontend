@@ -27,7 +27,6 @@ export class ProcuctFormComponent implements OnInit, OnDestroy {
     name: ['', Validators.required],
     price: [''],
     description: ['', Validators.required],
-    // category_id: ['', Validators.required],
     amount: [0, Validators.required],
   });
 
@@ -36,7 +35,6 @@ export class ProcuctFormComponent implements OnInit, OnDestroy {
     price: ['', Validators.required],
     description: ['', Validators.required],
     amount: [0, Validators.required],
-    // category_id: ['', Validators.required],
   });
 
   public saleProductForm = this.formBuilder.group({
@@ -94,8 +92,6 @@ export class ProcuctFormComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    console.log('==== DATA do modal: ====');
-    console.log(this.ref.data);
     this.productAction = this.ref.data;
 
     if (
@@ -103,8 +99,6 @@ export class ProcuctFormComponent implements OnInit, OnDestroy {
         this.productAction.productDatas.length === 0) &&
       this.ref.data.event.action != 'Vender produto'
     ) {
-      console.log('chamou');
-      // Se vier vazio, faz uma chamada
       this.productService
         .getAllProducts()
         .pipe(takeUntil(this.destroy$))
@@ -119,11 +113,8 @@ export class ProcuctFormComponent implements OnInit, OnDestroy {
       this.productAction.event?.id &&
       this.ref.data.event.action != 'Vender produto'
     ) {
-      console.log('else if');
       this.getProductSelectedDatas(this.productAction.event.id);
     }
-
-    console.log('AQUI, ', this.ref);
 
     if (
       (this.productAction.event?.action === 'EDIT_PRODUCT' ||
@@ -131,7 +122,6 @@ export class ProcuctFormComponent implements OnInit, OnDestroy {
       this.productAction.event?.id &&
       this.ref.data.event.action != 'Vender produto'
     ) {
-      console.log('this.ref.data.productDatas, ', this.ref.data.productDatas);
       const productFiltered = this.ref.data.productDatas.find(
         (ele: any) => String(ele?._id) === String(this.productAction.event.id)
       );
@@ -155,7 +145,6 @@ export class ProcuctFormComponent implements OnInit, OnDestroy {
         name: this.addProductForm.value.name as string,
         price: this.addProductForm.value.price as string,
         description: this.addProductForm.value.description as string,
-        // category_id: this.addProductForm.value.category_id as string,
         amount: Number(this.addProductForm.value.amount),
       };
       this.productService
@@ -173,7 +162,6 @@ export class ProcuctFormComponent implements OnInit, OnDestroy {
             }
           },
           error: (err) => {
-            console.log(err);
             this.messageService.add({
               severity: 'error',
               summary: 'Error',
@@ -198,7 +186,6 @@ export class ProcuctFormComponent implements OnInit, OnDestroy {
         description: this.editProductForm.value.description as string,
         product_id: this.productAction?.event?.id,
         amount: this.editProductForm.value.amount as number,
-        // category_id: this.editProductForm.value.category_id as string,
       };
       this.productService
         .editProduct(requestEditProduct)
@@ -228,7 +215,6 @@ export class ProcuctFormComponent implements OnInit, OnDestroy {
 
   handleSubmitSaleProduct(): void {
     if (this.saleProductForm.valid) {
-      // Pega o rawValue e converte para number, garantindo never null/undefined
       const rawAmount = this.saleProductForm.value.amount;
       const amountNumber = rawAmount != null ? Number(rawAmount) : 0;
 
@@ -268,10 +254,8 @@ export class ProcuctFormComponent implements OnInit, OnDestroy {
       const productFiltered = allProducts.find(
         (ele) => String(ele?._id) === String(productId)
       );
-      console.log('filtered: ', productFiltered);
       if (productFiltered) {
         this.productSelectedDatas = productFiltered;
-        console.log('Setou os valores');
         this.editProductForm.setValue({
           name: productFiltered.name,
           price: productFiltered.price,

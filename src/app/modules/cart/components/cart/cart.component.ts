@@ -124,7 +124,6 @@ export class CartComponent implements OnInit {
   }
 
   finalizePurchase() {
-    // Cria o pedido no backend
     this.http
       .post<{ orderId: string }>(`${this.API_URL}/paypal/create-order`, {
         items: this.cartItems,
@@ -133,9 +132,6 @@ export class CartComponent implements OnInit {
       .subscribe({
         next: (res) => {
           const orderId = res.orderId;
-          console.log('Order ID:', orderId);
-
-          // Abre o checkout do PayPal
           // @ts-ignore
           paypal
             .Buttons({
@@ -143,23 +139,20 @@ export class CartComponent implements OnInit {
                 return orderId;
               },
               onApprove: (data: any, actions: any) => {
-                // Finaliza o pagamento no backend
                 return this.http
                   .post(`${this.API_URL}/paypal/capture-order`, {
                     orderId: data.orderID,
                   })
                   .toPromise()
                   .then(() => {
-                    console.log('Pagamento concluído!');
                     this.checkoutDialogVisible = false;
-                    // Limpa o carrinho ou redireciona
                   });
               },
               onError: (err: any) => {
                 console.error('Erro no PayPal:', err);
               },
             })
-            .render('#paypal-button-container'); // Um container no teu template
+            .render('#paypal-button-container');
           this.checkoutDialogVisible = false;
         },
         error: (err) => {

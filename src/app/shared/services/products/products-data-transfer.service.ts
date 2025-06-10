@@ -26,17 +26,8 @@ export class ProductsDataTransferService {
             this.productsDatas = response;
           }
         },
-        // error: (err) => {
-        //   console.log(err)
-        //   this.message.add({
-        //     severity: 'error',
-        //     summary: 'Erro',
-        //     detail: 'Erro ao buscar produtos',
-        //     life: 1000
-        //   })
-        // }
       });
-      return this.productsDatas
+    return this.productsDatas;
   }
 
   constructor() {}

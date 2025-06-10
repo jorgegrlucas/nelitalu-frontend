@@ -39,7 +39,6 @@ export class CategoriesService {
   createNewCategory(requestDatas: {
     name: string;
   }): Observable<Array<GetCategoriesResponse>> {
-    console.log('resquestDatas', requestDatas);
     return this.http.post<Array<GetCategoriesResponse>>(
       `${this.API_URL}/category`,
       requestDatas,

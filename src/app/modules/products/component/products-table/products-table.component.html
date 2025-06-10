@@ -96,25 +96,6 @@
                 </div>
               </div>
             </th>
-            <!-- <th pSortableColumn="category.name">
-              <div class="flex justify-content-between align-items-center">
-                <div class="flex justify-content-between align-items-center">
-                  Categoria
-                </div>
-                <div class="flex justify-content-between align-items-center">
-                  <p-sortIcon field="category.name"></p-sortIcon>
-                  <p-columnFilter
-                    type="text"
-                    field="category.name"
-                    display="menu"
-                    matchMode="contains"
-                    [showMatchModes]="false"
-                    [showOperator]="false"
-                    [showAddButton]="false"
-                  ></p-columnFilter>
-                </div>
-              </div>
-            </th> -->
             <th>
               <div class="flex justify-content-center">
                 <p-button
@@ -137,7 +118,6 @@
             <td [pTooltip]="product?.description" tooltipPosition="top">
               {{ product?.description | shorten : 25 }}
             </td>
-            <!-- <td>{{ product?.category.name }}</td> -->
             <td>
               <div
                 class="flex justify-content-center gap-3 align-content-center align-items-center"

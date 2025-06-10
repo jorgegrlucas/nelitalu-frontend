@@ -19,33 +19,26 @@ import { UserService } from '../services/user/user.service';
 export class AuthGuardService implements CanActivate, CanLoad {
   constructor(private userService: UserService, private router: Router) {}
 
-  // src/app/guards/auth-guard.service.ts
   canActivate(
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ): boolean | UrlTree {
-    // ler roles permitidas desta rota
     const allowedRoles: string[] = route.data['roles'] || [];
 
-    // primeiro valida se está logado
     if (!this.userService.isLoggedIn()) {
       return this.router.createUrlTree(['/home'], {
         queryParams: { returnUrl: state.url },
       });
     }
 
-    // depois, se existirem roles configuradas, valida-as
     if (allowedRoles.length) {
-      // obter a role real do user (do JWT ou do endpoint /me)
       const userRole = this.userService.getUserRole();
 
       if (!userRole || !allowedRoles.includes(userRole)) {
-        // não tem permissão
         return this.router.createUrlTree(['/page']);
       }
     }
 
-    // se passou em todos os testes, autoriza
     return true;
   }
 

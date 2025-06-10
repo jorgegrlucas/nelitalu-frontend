@@ -29,7 +29,6 @@ export class UserService {
 
   isLoggedIn(): boolean {
     const JWT_TOKEN = this.cookie.get('USER_INFO');
-    console.log('this.cookie, ', this.cookie);
     return JWT_TOKEN ? true : false;
   }
 
@@ -37,7 +36,7 @@ export class UserService {
     const token = localStorage.getItem('token');
     if (!token) return null;
 
-    const payload = token.split('.')[1]; // pega a parte do payload
+    const payload = token.split('.')[1];
     const base64 = payload.replace(/-/g, '+').replace(/_/g, '/');
     const padded = base64.padEnd(
       base64.length + ((4 - (base64.length % 4)) % 4),
@@ -46,7 +45,6 @@ export class UserService {
     const decodedPayload = atob(padded);
     const decoded = JSON.parse(decodedPayload);
 
-    // Retorna o sub (id do usuário)
     return decoded.sub;
   }
 
@@ -63,7 +61,6 @@ export class UserService {
     return JSON.parse(atob(padded));
   }
 
-  /** Retorna true se o token indicar que é admin */
   isAdmin(): boolean {
     const payload = this.getTokenPayload();
     return payload?.isAdmin === true;
@@ -71,7 +68,6 @@ export class UserService {
 
   getUserRole(): string | null {
     const payload = this.getTokenPayload();
-    // imagina que no payload tens { isAdmin: true, role: 'admin' }
     return payload?.role ?? (payload?.isAdmin ? 'admin' : null);
   }
 }

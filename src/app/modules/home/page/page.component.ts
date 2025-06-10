@@ -28,7 +28,7 @@ export class PageComponent implements OnInit, OnDestroy {
     private favoritesService: FavoritesService,
     private router: Router,
     private messageService: MessageService,
-    private cartService: CartService // private confirmationService: ConfirmationService, // private dialogService: DialogService
+    private cartService: CartService
   ) {}
 
   ngOnInit(): void {
@@ -63,7 +63,6 @@ export class PageComponent implements OnInit, OnDestroy {
           }
         },
         error: (err) => {
-          console.log(err);
           this.messageService.add({
             severity: 'error',
             summary: 'Error',
@@ -92,7 +91,6 @@ export class PageComponent implements OnInit, OnDestroy {
   loadCartItems() {
     this.cartService.getCartItems().subscribe({
       next: (cartItems) => {
-        // Cria um dicionário: jewelId -> { cartItemId, quantity }
         this.cartItems = {};
         cartItems.forEach((item) => {
           this.cartItems[item.jewel._id] = {
@@ -154,7 +152,6 @@ export class PageComponent implements OnInit, OnDestroy {
   toggleCart(productId: string) {
     const existing = this.cartItems[productId];
     if (existing) {
-      // Se já existe, removemos
       this.cartService.removeFromCart(existing.cartItemId).subscribe({
         next: () => {
           delete this.cartItems[productId];
@@ -162,10 +159,8 @@ export class PageComponent implements OnInit, OnDestroy {
         error: (err) => console.error('Erro ao remover do carrinho:', err),
       });
     } else {
-      // Adiciona com quantidade 1, mas espera o retorno da API
       this.cartService.addToCart(productId, 1).subscribe({
         next: (createdItem: any) => {
-          // supondo que o endpoint retorne o item criado, incluindo _id e quantity
           this.cartItems[productId] = {
             cartItemId: createdItem._id,
             quantity: createdItem.quantity,
@@ -198,7 +193,7 @@ export class PageComponent implements OnInit, OnDestroy {
         .updateCartItemQuantity(cartItem.cartItemId, newQuantity)
         .subscribe({
           next: () => {
-            cartItem.quantity = newQuantity; // atualiza na view
+            cartItem.quantity = newQuantity;
           },
           error: (err) => {
             console.error('Erro ao aumentar quantidade:', err);
@@ -212,7 +207,6 @@ export class PageComponent implements OnInit, OnDestroy {
     if (cartItem) {
       const newQuantity = cartItem.quantity - 1;
       if (newQuantity <= 0) {
-        // Remove item do carrinho
         this.cartService.removeFromCart(cartItem.cartItemId).subscribe({
           next: () => {
             delete this.cartItems[productId];
@@ -226,7 +220,7 @@ export class PageComponent implements OnInit, OnDestroy {
           .updateCartItemQuantity(cartItem.cartItemId, newQuantity)
           .subscribe({
             next: () => {
-              cartItem.quantity = newQuantity; // atualiza na view
+              cartItem.quantity = newQuantity;
             },
             error: (err) => {
               console.error('Erro ao diminuir quantidade:', err);

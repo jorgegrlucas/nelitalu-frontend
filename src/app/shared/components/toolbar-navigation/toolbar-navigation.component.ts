@@ -8,7 +8,6 @@ import { ProcuctFormComponent } from 'src/app/modules/products/component/procuct
 interface JwtPayload {
   sub: string;
   isAdmin: boolean;
-  // ... outros campos
 }
 
 @Component({
@@ -68,5 +67,4 @@ function decodeJWT<T = any>(token: string): T {
 const token = localStorage.getItem('token');
 if (token) {
   const decoded = decodeJWT(token);
-  console.log(decoded);
 }

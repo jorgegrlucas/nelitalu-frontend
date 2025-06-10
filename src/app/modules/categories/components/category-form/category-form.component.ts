@@ -66,8 +66,6 @@ export class CategoryFormComponent implements OnInit, OnDestroy {
         name: this.categoryForm.value.name as string,
       };
 
-      console.log('dados', requestCreateCategory);
-
       this.categoriesService
         .createNewCategory(requestCreateCategory)
         .pipe(takeUntil(this.destroy$))
@@ -84,7 +82,6 @@ export class CategoryFormComponent implements OnInit, OnDestroy {
             this.categoryForm.reset();
           },
           error: (err) => {
-            console.log(err);
             this.categoryForm.reset();
             this.messageService.add({
               severity: 'error',
@@ -124,7 +121,6 @@ export class CategoryFormComponent implements OnInit, OnDestroy {
             });
           },
           error: (err) => {
-            console.log(err);
             this.messageService.add({
               severity: 'error',
               summary: 'Erro',

@@ -52,7 +52,6 @@ export class ProductsHomeComponent implements OnDestroy, OnInit {
           }
         },
         error: (err) => {
-          console.log(err);
           this.messageService.add({
             severity: 'error',
             summary: 'Error',
@@ -66,9 +65,6 @@ export class ProductsHomeComponent implements OnDestroy, OnInit {
 
   handleProductAction(event: EventAction): void {
     if (event) {
-      console.log('=== Dados antes de abrir o modal: ===');
-      console.log(this.productDatas);
-
       this.ref = this.dialogService.open(ProcuctFormComponent, {
         header: event?.action,
         width: '70%',
@@ -116,7 +112,6 @@ export class ProductsHomeComponent implements OnDestroy, OnInit {
         rejectLabel: 'Não',
         accept: () => this.deleteProduct(evento?.productId),
       });
-      console.log('DADOS RECEBIDOS: ', evento);
     }
   }
 
@@ -138,7 +133,6 @@ export class ProductsHomeComponent implements OnDestroy, OnInit {
             }
           },
           error: (err) => {
-            console.log(err);
             this.messageService.add({
               severity: 'error',
               summary: 'Error',
