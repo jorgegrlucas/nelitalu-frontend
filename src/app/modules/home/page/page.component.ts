@@ -1,3 +1,5 @@
+import { CookieService } from 'ngx-cookie-service';
+import { UserService } from './../../../services/user/user.service';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
@@ -17,7 +19,7 @@ export class PageComponent implements OnInit, OnDestroy {
   private readonly destroy$: Subject<void> = new Subject();
   public productDatas: Array<GetAllproductsResponse> = [];
   public likedProductsIds: number[] = [];
-  public currentUserId: string = '683ddf9e94c4253cd02c1720';
+  public currentUserId: string;
   cartItems: {
     [productId: string]: { cartItemId: string; quantity: number };
   } = {};
@@ -28,10 +30,15 @@ export class PageComponent implements OnInit, OnDestroy {
     private favoritesService: FavoritesService,
     private router: Router,
     private messageService: MessageService,
-    private cartService: CartService
-  ) {}
+    private cartService: CartService,
+    private userService: UserService,
+    private cookieService: CookieService
+  ) {
+    this.currentUserId = this.userService.getCurrentUserId() as string;
+  }
 
   ngOnInit(): void {
+    this.currentUserId = this.userService.getCurrentUserId() as string;
     this.getServiceProductdDatas();
     this.loadUserFavorites();
     this.loadCartItems();

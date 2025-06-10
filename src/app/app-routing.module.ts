@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 import { HomeComponent } from './modules/home/home.component';
 import { AuthGuardService } from './guards/auth-guard.service';
+import { DummyComponent } from './modules/DummyComponent';
 
 const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -51,6 +52,7 @@ const routes: Routes = [
     canActivate: [AuthGuardService],
     canLoad: [AuthGuardService],
   },
+  { path: 'dummy', component: DummyComponent },
 ];
 
 @NgModule({

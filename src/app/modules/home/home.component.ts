@@ -54,7 +54,7 @@ export class HomeComponent implements OnDestroy {
                 life: 2000,
               });
               this.loginForm.reset();
-              this.router.navigate(['page']);
+              this.router.navigate(['dummy']);
               this.loginCard = false;
             }
           },
