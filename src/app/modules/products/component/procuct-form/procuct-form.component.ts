@@ -4,7 +4,14 @@ import { MessageService } from 'primeng/api';
 import { FormBuilder, Validators } from '@angular/forms';
 import { CategoriesService } from './../../../../services/categories/categories.service';
 import { Subject, takeUntil } from 'rxjs';
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnDestroy,
+  OnInit,
+  Output,
+} from '@angular/core';
 import { Router } from '@angular/router';
 import { GetCategoriesResponse } from 'src/app/models/interfaces/categories/responses/getCategoriesResponse';
 import { CreateProductRequest } from 'src/app/models/interfaces/products/request/CreateProductRequest';
@@ -21,6 +28,18 @@ import { EditProductRequest } from 'src/app/models/interfaces/products/request/E
   styleUrls: [],
 })
 export class ProcuctFormComponent implements OnInit, OnDestroy {
+  /** Controla a visibilidade do modal de confirmação de delete */
+  @Input() deleteModalVisible = false;
+
+  /** Dados do produto selecionado para deletar */
+  @Input() productToDelete!: { id: string; name: string } | null;
+
+  /** Emite quando o usuário confirma o delete no modal */
+  @Output() confirmDelete = new EventEmitter<string>();
+
+  /** Emite quando o modal de delete deve ser fechado sem ação */
+  @Output() cancelDelete = new EventEmitter<void>();
+
   private readonly destroy$: Subject<void> = new Subject();
 
   public addProductForm = this.formBuilder.group({
@@ -140,7 +159,12 @@ export class ProcuctFormComponent implements OnInit, OnDestroy {
   }
 
   handleSubmitAddProduct(): void {
-    if (this.addProductForm?.value && this.addProductForm?.valid) {
+    if (
+      this.addProductForm?.value &&
+      this.addProductForm?.valid &&
+      Number(this.addProductForm.value.price) > 0 &&
+      Number(this.addProductForm.value.amount) >= 0
+    ) {
       const requestCreateProduct: CreateProductRequest = {
         name: this.addProductForm.value.name as string,
         price: this.addProductForm.value.price as string,
@@ -170,15 +194,23 @@ export class ProcuctFormComponent implements OnInit, OnDestroy {
             });
           },
         });
+    } else {
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Error',
+        detail: 'Valores para preço/quantidade inválido',
+        life: 2500,
+      });
     }
-    this.addProductForm.reset();
   }
 
   handleSubmitEditProduct(): void {
     if (
       this.editProductForm.value &&
       this.editProductForm.valid &&
-      this.productAction.event.id
+      this.productAction.event.id &&
+      Number(this.editProductForm.value.price) > 0 &&
+      Number(this.editProductForm.value.amount) >= 0
     ) {
       const requestEditProduct: EditProductRequest = {
         name: this.editProductForm.value.name as string,
@@ -198,7 +230,6 @@ export class ProcuctFormComponent implements OnInit, OnDestroy {
               detail: 'Produto editado com sucesso!',
               life: 2500,
             });
-            this.editProductForm.reset();
           },
           error: (err) => {
             this.messageService.add({
@@ -207,9 +238,15 @@ export class ProcuctFormComponent implements OnInit, OnDestroy {
               detail: 'Erro o editar produto!',
               life: 2500,
             });
-            this.editProductForm.reset();
           },
         });
+    } else {
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Error',
+        detail: 'Valores para preço/quantidade inválido',
+        life: 2500,
+      });
     }
   }
 
@@ -234,7 +271,6 @@ export class ProcuctFormComponent implements OnInit, OnDestroy {
               detail: `Venda efetuada!`,
               life: 2500,
             });
-            this.getProductDatas();
           },
           error: (err) => {
             this.messageService.add({
