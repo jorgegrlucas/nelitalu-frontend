@@ -54,11 +54,15 @@ export class DashboardHomeComponent implements OnInit, OnDestroy {
   setProductsChartConfig(): void {
     if (this.productsList.length > 0) {
       const documentStyle = getComputedStyle(document.documentElement);
-      const textColor = documentStyle.getPropertyValue('--text-color');
-      const textColorSecondary = documentStyle.getPropertyValue(
-        '--text-color-secondary'
-      );
-      const surfaceBorder = documentStyle.getPropertyValue('--surface-border');
+      // const textColor = documentStyle.getPropertyValue('--text-color');
+      // const textColorSecondary = documentStyle.getPropertyValue(
+      //   '--text-color-secondary'
+      // );
+      // const surfaceBorder = documentStyle.getPropertyValue('--surface-border');
+
+      const textColor = '#000';
+      const textColorSecondary = '#000';
+      const surfaceBorder = 'rgba(0,0,0,0.1)';
 
       this.productChartDatas = {
         labels: this.productsList.map((element) => element?.name),

@@ -1,13 +1,13 @@
 $background-color: #fbeff2;
 $accent-color: #eaaa61;
-$text-color: #5a4a42;
+$text-color: #5a4254;
 $hover-color: #ecd7bf;
 
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: 'Segoe UI', sans-serif;
+  font-family: "Segoe UI", sans-serif;
 }
 
 body {
@@ -16,7 +16,7 @@ body {
 }
 
 .grid {
-  background-image: url('../../../assets/background.png') !important;
+  background-image: url("../../../assets/background.png") !important;
   background-size: contain;
   background-position: center;
   background-repeat: no-repeat;
@@ -60,7 +60,12 @@ a {
   }
 }
 
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   color: $text-color;
   margin-bottom: 0.5rem;
 }

@@ -1,4 +1,3 @@
-// src/app/guards/auth-guard.service.ts
 import { Injectable } from '@angular/core';
 import {
   CanActivate,

@@ -34,3 +34,57 @@
     </div>
   </form>
 </div>
+
+<div *ngIf="productAction.event.action === editProductAction">
+  <form [formGroup]="editProductForm" (ngSubmit)="handleSubmitEditProduct()">
+    <div class="card flex flex-column md:flex-column gap-3">
+      <input pInputText placeholder="Nome" formControlName="name" />
+      <input pInputText placeholder="Preço" formControlName="price" />
+      <input pInputText placeholder="Descrição" formControlName="description" />
+      <input pInputNumber placeholder="Quantidade" formControlName="amount" />
+
+      <div
+        class="flex flex-row justify-content-center align-content-center align-items-center m-1"
+      >
+        <p-button
+          [disabled]="!editProductForm.valid"
+          type="submit"
+          label="Concluir"
+        ></p-button>
+      </div>
+    </div>
+  </form>
+</div>
+
+<div *ngIf="productAction.event.action === saleProductAction">
+  <form [formGroup]="saleProductForm" (ngSubmit)="handleSubmitSaleProduct()">
+    <div class="card p-fluid">
+      <div class="sale-row">
+        <p-dropdown
+          class="w-75"
+          [options]="productDatas"
+          [(ngModel)]="saleProductSelected"
+          optionLabel="name"
+          optionValue="id"
+          formControlName="product_id"
+          placeholder="Selecione um produto"
+        ></p-dropdown>
+
+        <input
+          pInputNumber
+          class="w-25"
+          placeholder="Quantidade"
+          formControlName="amount"
+        />
+      </div>
+
+      <div class="button-row">
+        <p-button
+          [disabled]="!saleProductForm.valid"
+          type="submit"
+          label="Concluir"
+        ></p-button>
+      </div>
+    </div>
+  </form>
+</div>

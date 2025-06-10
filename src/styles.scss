@@ -1,11 +1,15 @@
 $background-color: #fbeff2;
 $accent-color: #f4a9c2;
 $hover-color: #f3c1d7;
-$text-color: #5a4a42;
+$text-color: #000000;
 $border-color: lighten($accent-color, 30%);
-$card-background: #e5c6a2;
+$card-background: #f5f11e7f;
 $card-border: #eaaa61;
-$card-text: #5a4a42;
+$card-text: #5a424c;
+
+::ng-deep .p-datatable {
+  background-color: #fafafa !important;
+}
 
 * {
   margin: 0;
@@ -172,7 +176,7 @@ textarea {
 .p-datatable .p-datatable-tbody,
 .p-datatable .p-datatable-thead {
   background-color: #5a4a42 !important;
-  color: #f4a9c2 !important;
+  color: #a9a9f4 !important;
 }
 
 .product-grid {
@@ -274,25 +278,23 @@ button.p-button.small-btn {
 }
 
 .page-container {
-  padding: 0 1rem; /* espaçamento lateral */
-  margin-top: 1rem; /* dá um respiro abaixo da toolbar */
+  padding: 0 1rem;
+  margin-top: 1rem;
 }
 
 .page-title {
-  margin: 0 auto 1.5rem; /* centraliza e espaça abaixo */
-  max-width: 800px; /* evita que fique muito esticado */
+  margin: 0 auto 1.5rem;
+  max-width: 800px;
   font-size: 2rem;
-  text-align: center; /* ou left, conforme preferência */
+  text-align: center;
 }
 
-/* Ajuste na grid para espaçar melhor os cards */
 .product-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
   gap: 1.5rem;
 }
 
-/* Opcional: dá um padding interno aos cards e um box-shadow suave */
 .product-card {
   padding: 1rem;
   border-radius: 0.5rem;
