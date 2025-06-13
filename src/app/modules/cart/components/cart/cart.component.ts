@@ -1,8 +1,12 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service';
 import { MessageService } from 'primeng/api';
+import { Subject, takeUntil } from 'rxjs';
+import { SaleProductRequest } from 'src/app/models/interfaces/products/request/SaleProductRequest';
 import { CartService } from 'src/app/services/cart/cart-service.service';
+import { ProductsService } from 'src/app/services/products/products.service';
 import { environment } from 'src/environments/environment';
 
 @Component({
@@ -21,16 +25,24 @@ export class CartComponent implements OnInit {
       Authorization: `Bearer ${this.JWT_TOKEN}`,
     }),
   };
+  private readonly destroy$: Subject<void> = new Subject();
 
   constructor(
     private cartService: CartService,
     private messageService: MessageService,
     private http: HttpClient,
-    private cookie: CookieService
+    private cookie: CookieService,
+    private router: Router,
+    private productService: ProductsService
   ) {}
 
   ngOnInit(): void {
     this.loadCart();
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   loadCart() {
@@ -134,6 +146,10 @@ export class CartComponent implements OnInit {
   }
 
   finalizePurchase() {
+    const container = document.getElementById('paypal-button-container');
+    if (container) {
+      container.innerHTML = '';
+    }
     this.http
       .post<{ orderId: string }>(`${this.API_URL}/paypal/create-order`, {
         items: this.cartItems,
@@ -156,6 +172,53 @@ export class CartComponent implements OnInit {
                   .toPromise()
                   .then(() => {
                     this.checkoutDialogVisible = false;
+                    console.log('cart:', this.cartItems);
+                    for (
+                      let index = 0;
+                      index < this.cartItems.length;
+                      index++
+                    ) {
+                      console.log(
+                        'product_id: ',
+                        this.cartItems[index].jewel._id
+                      );
+                      console.log('amount: ', this.cartItems[index].quantity);
+                      const requestDatas: SaleProductRequest = {
+                        amount: this.cartItems[index].quantity,
+                        product_id: this.cartItems[index].jewel._id,
+                      };
+                      this.productService
+                        .saleProduct(requestDatas)
+                        .pipe(takeUntil(this.destroy$))
+                        .subscribe({
+                          next: (res) => {
+                            this.http
+                              .delete(`${this.API_URL}/cart`, {
+                                ...this.httpOptions,
+                                body: { userId: this.JWT_TOKEN },
+                              })
+                              .subscribe({
+                                next: () => {
+                                  this.cartItems = [];
+
+                                  this.router.navigateByUrl('/page');
+                                  this.messageService.add({
+                                    severity: 'success',
+                                    summary: 'Sucesso',
+                                    detail: 'Compra efetuada com sucesso',
+                                    life: 2000,
+                                  });
+                                },
+                                error: (err) => {
+                                  console.error(
+                                    'Erro ao limpar carrinho:',
+                                    err
+                                  );
+                                },
+                              });
+                          },
+                        });
+                    }
                   });
               },
               onError: (err: any) => {

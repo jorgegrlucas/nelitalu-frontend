@@ -4,7 +4,7 @@ import { FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service';
 import { MessageService } from 'primeng/api';
-import { Subject, takeUntil } from 'rxjs';
+import { Subject, takeUntil, timer } from 'rxjs';
 import { AuthRequest } from 'src/app/models/interfaces/user/authRequest';
 import { AuthResponse } from 'src/app/models/interfaces/user/authResponse';
 import { SignUpUserRequest } from 'src/app/models/interfaces/user/signUpUserRequest';
@@ -28,6 +28,8 @@ export class HomeComponent implements OnDestroy {
     name: ['', Validators.required],
     email: ['', Validators.required],
     password: ['', Validators.required],
+    address: ['', Validators.required],
+    contact: ['', Validators.required],
   });
 
   constructor(
@@ -38,6 +40,12 @@ export class HomeComponent implements OnDestroy {
     private router: Router
   ) {}
 
+  onAction() {
+    console.log('Antes do timer');
+    timer(5000).subscribe(() => {
+      console.log('2 segundos depois pelo RxJS');
+    });
+  }
   onSubmitLoginForm(): void {
     if (this.loginForm.value && this.loginForm.valid) {
       this.UserService.authUser(this.loginForm.value as AuthRequest)
@@ -54,6 +62,7 @@ export class HomeComponent implements OnDestroy {
                 life: 2000,
               });
               this.loginForm.reset();
+              this.onAction();
               this.router.navigate(['dummy']);
               this.loginCard = false;
             }
@@ -80,7 +89,7 @@ export class HomeComponent implements OnDestroy {
               this.messageService.add({
                 severity: 'success',
                 summary: 'Sucesso',
-                detail: `Usuário ${response.name} criado com sucesso`,
+                detail: `Usuário criado com sucesso`,
                 life: 2000,
               });
               this.signUpForm.reset();

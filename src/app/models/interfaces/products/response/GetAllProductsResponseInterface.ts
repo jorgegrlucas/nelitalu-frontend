@@ -9,4 +9,6 @@ export interface GetAllproductsResponse {
     name: string;
   };
   _id: any;
+  thumbnail?: string;
+  thumbnail_url?: string;
 }

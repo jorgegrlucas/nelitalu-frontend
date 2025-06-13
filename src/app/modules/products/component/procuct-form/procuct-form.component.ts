@@ -41,6 +41,7 @@ export class ProcuctFormComponent implements OnInit, OnDestroy {
   @Output() cancelDelete = new EventEmitter<void>();
 
   private readonly destroy$: Subject<void> = new Subject();
+  selectedFile: File | null = null;
 
   public addProductForm = this.formBuilder.group({
     name: ['', Validators.required],
@@ -165,14 +166,16 @@ export class ProcuctFormComponent implements OnInit, OnDestroy {
       Number(this.addProductForm.value.price) > 0 &&
       Number(this.addProductForm.value.amount) >= 0
     ) {
-      const requestCreateProduct: CreateProductRequest = {
-        name: this.addProductForm.value.name as string,
-        price: this.addProductForm.value.price as string,
-        description: this.addProductForm.value.description as string,
-        amount: Number(this.addProductForm.value.amount),
-      };
+      const formData = new FormData();
+      formData.append('name', this.addProductForm.value.name!);
+      formData.append('price', this.addProductForm.value.price!);
+      formData.append('description', this.addProductForm.value.description!);
+      formData.append('amount', String(this.addProductForm.value.amount));
+      if (this.selectedFile) {
+        formData.append('thumbnail', this.selectedFile, this.selectedFile.name);
+      }
       this.productService
-        .createProduct(requestCreateProduct)
+        .createProduct(formData)
         .pipe(takeUntil(this.destroy$))
         .subscribe({
           next: (response) => {
@@ -184,6 +187,7 @@ export class ProcuctFormComponent implements OnInit, OnDestroy {
                 life: 2500,
               });
             }
+            this.addProductForm.reset();
           },
           error: (err) => {
             this.messageService.add({
@@ -212,15 +216,18 @@ export class ProcuctFormComponent implements OnInit, OnDestroy {
       Number(this.editProductForm.value.price) > 0 &&
       Number(this.editProductForm.value.amount) >= 0
     ) {
-      const requestEditProduct: EditProductRequest = {
-        name: this.editProductForm.value.name as string,
-        price: this.editProductForm.value.price as string,
-        description: this.editProductForm.value.description as string,
-        product_id: this.productAction?.event?.id,
-        amount: this.editProductForm.value.amount as number,
-      };
+      const formData = new FormData();
+      formData.append('name', this.editProductForm.value.name!);
+      formData.append('price', this.editProductForm.value.price!);
+      formData.append('description', this.editProductForm.value.description!);
+      formData.append('amount', String(this.editProductForm.value.amount));
+      formData.append('product_id', this.productAction.event.id);
+      if (this.selectedFile) {
+        formData.append('thumbnail', this.selectedFile, this.selectedFile.name);
+      }
+
       this.productService
-        .editProduct(requestEditProduct)
+        .editProduct(formData)
         .pipe(takeUntil(this.destroy$))
         .subscribe({
           next: () => {
@@ -315,5 +322,12 @@ export class ProcuctFormComponent implements OnInit, OnDestroy {
           }
         },
       });
+  }
+
+  onFileSelected(event: Event) {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files.length > 0) {
+      this.selectedFile = input.files[0];
+    }
   }
 }

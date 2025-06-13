@@ -24,6 +24,15 @@
         <label for="amount"> Quantidade <span class="required">*</span> </label>
         <input id="amount" pInputNumber formControlName="amount" required />
       </div>
+      <div class="field col-12 md:col-6">
+        <label for="thumbnail">Thumbnail</label>
+        <input
+          id="thumbnail"
+          type="file"
+          (change)="onFileSelected($event)"
+          accept="image/*"
+        />
+      </div>
       <div class="field col-12 flex justify-content-center">
         <p-button
           [disabled]="!addProductForm.valid"
@@ -42,6 +51,15 @@
       <input pInputText placeholder="Preço" formControlName="price" />
       <input pInputText placeholder="Descrição" formControlName="description" />
       <input pInputNumber placeholder="Quantidade" formControlName="amount" />
+      <div class="field col-12 md:col-6">
+        <label for="thumbnail">Thumbnail</label>
+        <input
+          id="thumbnail"
+          type="file"
+          (change)="onFileSelected($event)"
+          accept="image/*"
+        />
+      </div>
 
       <div
         class="flex flex-row justify-content-center align-content-center align-items-center m-1"

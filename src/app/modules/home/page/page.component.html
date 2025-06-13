@@ -4,6 +4,13 @@
   <h1 class="page-title">Produtos à Venda</h1>
   <div class="product-grid">
     <div class="product-card" *ngFor="let jewel of productDatas">
+      <img
+        *ngIf="jewel.thumbnail_url"
+        [src]="jewel.thumbnail_url"
+        [alt]="jewel.name"
+        class="product-thumb"
+        style="width: 128px; height: 128px; object-fit: cover"
+      />
       <div class="product-name">{{ jewel.name }}</div>
       <div class="product-name">{{ jewel.description }}</div>
       <div class="product-price">

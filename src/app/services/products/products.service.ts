@@ -23,6 +23,9 @@ export class ProductsService {
       Authorization: `Bearer ${this.JWT_TOKEN}`,
     }),
   };
+  private authHeader = {
+    headers: new HttpHeaders({ Authorization: `Bearer ${this.JWT_TOKEN}` }),
+  };
 
   constructor(private http: HttpClient, private cookie: CookieService) {}
 
@@ -39,21 +42,19 @@ export class ProductsService {
     );
   }
 
-  createProduct(
-    requestDatas: CreateProductRequest
-  ): Observable<CreateProductResponse> {
+  createProduct(formData: FormData): Observable<CreateProductResponse> {
     return this.http.post<CreateProductResponse>(
       `${this.API_URL}/product`,
-      requestDatas,
-      this.httpOptions
+      formData,
+      this.authHeader
     );
   }
 
-  editProduct(requestDatas: EditProductRequest): Observable<void> {
+  editProduct(formData: FormData): Observable<void> {
     return this.http.put<void>(
       `${this.API_URL}/product/edit`,
-      requestDatas,
-      this.httpOptions
+      formData,
+      this.authHeader
     );
   }
 
